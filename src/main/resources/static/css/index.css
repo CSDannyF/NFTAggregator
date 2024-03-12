@@ -19,13 +19,13 @@
 body {
     font-family: 'Roboto';
     font-weight: 100;
-    /*background: rgb(90,149,193);
-    background: linear-gradient(24deg, rgba(90,149,193,1) 28%, rgba(45,217,253,0.6032482598607889) 87%);*/
+    background: rgb(255,255,255);
+    background: linear-gradient(48deg, rgba(255,255,255,1) 0%, rgba(45,217,255,1) 100%);
     }
 
 .navbar {
-    background: rgb(90,149,193);
-    background: linear-gradient(24deg, rgba(90,149,193,1) 28%, rgba(45,217,253,0.6) 87%)
+    width: auto;
+    height: 70px;
 }
 
 .dropdown-menu {
@@ -34,13 +34,21 @@ body {
 
 .navbar-brand {
     font-family: 'Abril Fatface';
-    font-size: 35px;
+    font-size: 30px;
     font-weight: 400;
     }
 
 .btn {
     /*background-color: rgba(214, 224, 44, 1);
     border-color: rgba(163, 172, 0, 1);*/
+}
+
+.jumbotron {
+    font-family: 'Abril Fatface';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
 }
 
 /* ---- Login Card ---- */
