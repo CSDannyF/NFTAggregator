@@ -11,4 +11,10 @@ public class HeaderController {
     public String showAccount(Model model) {
         return "account";
     }
+
+    @GetMapping("/")
+    public String homePage()
+    {
+        return "index";
+    }
 }
