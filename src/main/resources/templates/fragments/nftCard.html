@@ -12,20 +12,181 @@
 </head>
 <body>
 
+<div th:each="nfts:${nfts}">
   <div id="nftCard" th:fragment="nftCard">
     <div class="col">
       <div class="card">
         <div class="img-wrapper">
-          <img class="img-fluid" th:src="${imgUrl}" alt="...">
+          <img class="img-fluid" th:src="${imgurl}" alt="...">
         </div>
         <div class="card-body">
-          <p class="card-text" th:text="${tokenId}">tokenId</p>
-          <h6 th:text="${collectionName}">collectionName</h6>
-          <p class="card-text"><small th:text="price" class="text-body-secondary">priceInEth</small></p>
+          <p class="card-text" th:text="${tokenId}"></p>
+          <h6 th:text="${collection}"></h6>
+          <p class="card-text"><small th:text="${price}" class="text-body-secondary"></small></p>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+  <!--
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/timeless.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/birdnard.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/doodle.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/pukenza.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/kumo.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/noodle.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/pukenza2.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/timeless.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+
+
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/birdnard.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/doodle.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/pukenza.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+
+ <div class="col">
+   <div class="card">
+     <div class="img-wrapper">
+       <img class="img-fluid" src="../images/kumo.jpeg" alt="...">
+     </div>
+     <div class="card-body">
+       <p class="card-text">tokenId</p>
+       <h6 >collectionName</h6>
+       <p class="card-text"><small class="text-body-secondary">priceInEth</small></p>
+     </div>
+   </div>
+ </div>
+ -->
 
 </body>
 </html>

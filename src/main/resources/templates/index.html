@@ -25,13 +25,14 @@
     <hr class="my-4">
   </div>
 
-  <!-- Trending table -->
   <div class="container mt-5">
+
+    <!-- Trending table -->
     <div class="row">
       <div class="col-1"></div>
-      <div class="col-5">
 
-        <!-- Left table -->
+      <!-- Left table -->
+      <div class="col-5">
         <table class="table table-striped table-hover">
           <thead>
             <tr>
@@ -125,13 +126,9 @@
 
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4" id="card-row">
       <!-- render cards here -->
-      <div th:each="cards:${cards}">
-        <div th:replace="fragments/nftCard :: nftCard(${card.imgUrl}, ${card.tokenId}, ${card.collectionName}, ${card.price}"></div>
-      </div>
 
+        <div th:insert="~{fragments/nftCard :: nftCard}"></div>
       </div>
-    </div>
-
     </div>
   </div>
 
