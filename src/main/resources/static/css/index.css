@@ -89,6 +89,15 @@ body {
     object-fit: contain;
 }
 
+#trendingImage {
+    max-width: 60px;
+    max-height: 60px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
 .card-text {
     font-family: 'Arial' ;
     font-size: 20px;

@@ -14,7 +14,7 @@
 
   <!-- heading -->
   <div class="sticky-top">
-    <div th:replace="~{fragments/header :: header}"></div>
+    <div th:insert="~{fragments/header :: header}"></div>
   </div>
 
 
@@ -28,107 +28,39 @@
   <div class="container mt-5">
 
     <!-- Trending table -->
-    <div class="row">
-      <div class="col-1"></div>
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Collection</th>
+        <th>Floor price</th>
+        <th>24h change</th>
+        <th>24h volume</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="collection : ${trendingCollectionsDtos}">
 
-      <!-- Left table -->
-      <div class="col-5">
-        <table class="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th>Collection</th>
-              <th>Floor price</th>
-              <th>1 day change</th>
-              <th>1 day volume</th>
-            </tr>
-          </thead>
-          <tbody class="table-group-divider">
-            <tr>
-              <th>1</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-            <tr>
-              <th>2</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-            <tr>
-              <th>3</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-            <tr>
-              <th>4</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-            <tr>
-              <th>5</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Right table -->
-      <div class="col-5">
-        <table class="table table-striped table-hover">
-          <thead>
-          <tr>
-            <th>Collection</th>
-            <th>Floor price</th>
-            <th>1 day change</th>
-            <th>1 day volume</th>
-          </tr>
-          </thead>
-          <tbody class="table-group-divider">
-            <tr>
-              <th>6</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-            <tr>
-              <th>7</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-            <tr>
-              <th>8</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-            <tr>
-              <th>9</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+        <td>
+          <a> <!--th:href=""-->
+            <img th:src="${collection.image}" alt="cat" id="trendingImage">
+            <span th:text="${collection.name}"></span>
+          </a>
+        </td>
+        <td>
+          <a>
+            <span th:text="${collection.nativePrice}"></span>
+            <span th:text="${collection.priceSymbol}"></span>
+          </a>
+        </td>
+        <td th:text="${collection.oneDayVolumeChange}"></td>
+        <td th:text="${collection.oneDayCollectionVolume}"></td>
+      </tr>
+      </tbody>
+    </table>
 
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4" id="card-row">
       <!-- render cards here -->
-
-        <div th:insert="~{fragments/nftCard :: nftCard}"></div>
-      </div>
+      <div th:each="nft : ${nfts}" th:insert="~{fragments/nftCard :: nftCard}"></div>
     </div>
   </div>
 

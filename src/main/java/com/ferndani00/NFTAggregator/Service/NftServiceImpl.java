@@ -1,0 +1,54 @@
+package com.ferndani00.NFTAggregator.Service;
+
+import com.ferndani00.NFTAggregator.dao.NftDao;
+import com.ferndani00.NFTAggregator.dto.NftDto;
+import com.ferndani00.NFTAggregator.helperClasses.NumberRounder;
+import com.ferndani00.NFTAggregator.models.token.TokenResponse;
+import com.ferndani00.NFTAggregator.models.token.TokenWrapper;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+@Service
+public class NftServiceImpl {
+
+    @Autowired
+    private NftDao nftDao = new NftDao();
+
+    //Mapper om de listedTokend/Nfts te mappen in een vereenvoudigde klaqqe
+    public List<NftDto> mapToNftDto(TokenResponse tokenResponse)
+    {
+        List<NftDto> nftDtos = new ArrayList<>();
+
+        for(TokenWrapper tokenWrapper : tokenResponse.getTokens())
+        {
+            NftDto nftDto = new NftDto();
+            nftDto.setContract(tokenWrapper.getToken().getContract());
+            nftDto.setTokenId(tokenWrapper.getToken().getTokenId());
+            nftDto.setName(tokenWrapper.getToken().getName());
+            nftDto.setImageSmall(tokenWrapper.getToken().getImageSmall());
+            nftDto.setImageLarge(tokenWrapper.getToken().getImageLarge());
+            nftDto.setKind(tokenWrapper.getToken().getKind());
+            nftDto.setRarityRank(tokenWrapper.getToken().getRarityRank());
+            nftDto.setCollectionId(tokenWrapper.getToken().getCollection().getId());
+            nftDto.setCollectionName(tokenWrapper.getToken().getCollection().getName());
+            nftDto.setPriceSymbol(tokenWrapper.getMarket().getFloorAsk().getPrice().getCurrency().getSymbol());
+            nftDto.setOwner(tokenWrapper.getToken().getOwner());
+            nftDto.setExternalSiteUrl(tokenWrapper.getMarket().getFloorAsk().getSource().getUrl());
+
+            double nativePrice = NumberRounder.rounder(tokenWrapper.getMarket().getFloorAsk().getPrice().getAmount().getDecimal());
+            double usdPrice = NumberRounder.rounder(tokenWrapper.getMarket().getFloorAsk().getPrice().getAmount().getUsd());
+
+            nftDto.setNativePrice(nativePrice);
+            nftDto.setUsdPrice(usdPrice);
+
+            nftDtos.add(nftDto);
+        }
+        return nftDtos;
+    }
+}

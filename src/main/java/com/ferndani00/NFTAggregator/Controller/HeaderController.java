@@ -1,4 +1,4 @@
-package com.ferndani00.NFTAggregator.controllers;
+package com.ferndani00.NFTAggregator.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +10,5 @@ public class HeaderController {
     @GetMapping("/account")
     public String showAccount(Model model) {
         return "account";
-    }
-
-    @GetMapping("/")
-    public String homePage()
-    {
-        return "index";
     }
 }

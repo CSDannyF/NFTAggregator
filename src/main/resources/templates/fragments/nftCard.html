@@ -12,22 +12,22 @@
 </head>
 <body>
 
-<div th:each="nfts:${nfts}">
+
   <div id="nftCard" th:fragment="nftCard">
     <div class="col">
       <div class="card">
         <div class="img-wrapper">
-          <img class="img-fluid" th:src="${imgurl}" alt="...">
+          <img class="img-fluid" th:src="${nft.imageSmall}" alt="cat">
         </div>
         <div class="card-body">
-          <p class="card-text" th:text="${tokenId}"></p>
-          <h6 th:text="${collection}"></h6>
-          <p class="card-text"><small th:text="${price}" class="text-body-secondary"></small></p>
+          <p class="card-text" th:text="${nft.name}"></p>
+          <h6 th:text="${nft.collectionName}"></h6>
+          <p class="card-text"><small th:text="${nft.nativePrice}" class="text-body-secondary"></small></p>
         </div>
       </div>
     </div>
   </div>
-</div>
+
 
   <!--
  <div class="col">
