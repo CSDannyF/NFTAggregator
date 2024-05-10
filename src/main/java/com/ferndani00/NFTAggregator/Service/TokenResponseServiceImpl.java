@@ -1,6 +1,6 @@
 package com.ferndani00.NFTAggregator.Service;
 
-import com.ferndani00.NFTAggregator.dao.NftDao;
+import com.ferndani00.NFTAggregator.Endpoints.NftEndpoint;
 import com.ferndani00.NFTAggregator.models.token.TokenResponse;
 import com.ferndani00.NFTAggregator.models.token.TokenWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,11 @@ import java.util.List;
 public class TokenResponseServiceImpl {
 
     @Autowired
-    private NftDao nftDao = new NftDao();
+    private NftEndpoint nftEndPoint = new NftEndpoint();
 
     public TokenResponse getCollectionListings(String contractAdress)
     {
-        return nftDao.getListingData(contractAdress);
+        return nftEndPoint.getListingData(contractAdress);
     }
 
     public List<TokenWrapper> mapToTokenWrapper()

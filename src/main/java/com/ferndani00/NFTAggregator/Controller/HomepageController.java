@@ -1,10 +1,10 @@
 package com.ferndani00.NFTAggregator.Controller;
 
+import com.ferndani00.NFTAggregator.Endpoints.CollectionEndpoint;
+import com.ferndani00.NFTAggregator.Endpoints.NftEndpoint;
 import com.ferndani00.NFTAggregator.Service.NftServiceImpl;
 import com.ferndani00.NFTAggregator.Service.TrendingCollectionResponseServiceImpl;
-import com.ferndani00.NFTAggregator.Service.TrendingCollectionService;
-import com.ferndani00.NFTAggregator.dao.CollectionDao;
-import com.ferndani00.NFTAggregator.dao.NftDao;
+import com.ferndani00.NFTAggregator.Service.TrendingCollectionServiceImpl;
 import com.ferndani00.NFTAggregator.dto.NftDto;
 import com.ferndani00.NFTAggregator.dto.TrendingCollectionDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +21,14 @@ public class HomepageController {
     private TrendingCollectionResponseServiceImpl trendingCollectionResponseService = new TrendingCollectionResponseServiceImpl();
 
     @Autowired
-    private CollectionDao collectionDao = new CollectionDao();
+    private CollectionEndpoint collectionEndpoint = new CollectionEndpoint();
 
     @Autowired
-    private TrendingCollectionService trendingCollectionService;
+    private TrendingCollectionServiceImpl trendingCollectionServiceImpl;
 
 
     @Autowired
-    private NftDao nftDao = new NftDao();
+    private NftEndpoint nftEndpoint = new NftEndpoint();
 
     @Autowired
     private NftServiceImpl nftService = new NftServiceImpl();
@@ -42,11 +42,12 @@ public class HomepageController {
     @GetMapping("/")
     public String homepage(Model model)
     {
-        trendingCollectionDtos = trendingCollectionService.mapToTrendingCollectionDto(collectionDao.getTrendingCollections("24h", 15));
-        nfts = nftService.mapToNftDto(nftDao.getListingData("0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e"));
+        trendingCollectionDtos = trendingCollectionServiceImpl.mapToTrendingCollectionDto(collectionEndpoint.getTrendingCollections("24h", 15));
+        nfts = nftService.mapToNftDto(nftEndpoint.getListingData("0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e"));
 
         model.addAttribute("trendingCollectionsDtos", trendingCollectionDtos);
         model.addAttribute("nfts", nfts);
+        System.out.println(trendingCollectionDtos.get(1).getContractAddress());
         return "index";
     }
 

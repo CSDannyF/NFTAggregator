@@ -41,7 +41,7 @@
       <tr th:each="collection : ${trendingCollectionsDtos}">
 
         <td>
-          <a> <!--th:href=""-->
+          <a th:href="@{/collection/} + ${collection.contractAddress}">
             <img th:src="${collection.image}" alt="cat" id="trendingImage">
             <span th:text="${collection.name}"></span>
           </a>

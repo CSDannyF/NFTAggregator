@@ -1,4 +1,4 @@
-package com.ferndani00.NFTAggregator.dao;
+package com.ferndani00.NFTAggregator.Endpoints;
 
 import com.ferndani00.NFTAggregator.ApiHttpClient.ApiHttpClient;
 import com.ferndani00.NFTAggregator.models.token.TokenResponse;
@@ -8,7 +8,13 @@ import org.springframework.stereotype.Service;
 
 @Component
 @Service
-public class NftDao  {
+public class NftEndpoint {
+
+    //DAO stands for Data Access Object. DAO Design Pattern is used to separate the data persistence logic in a separate layer.
+    // This way, the service remains completely in dark about how the low-level operations to access the database is done.
+    // This is known as the principle of Separation of Logic
+
+    //dit is dan niet het juiste gebruik van een dao
 
     //opensea api voor 1 nft
     public String getNFT(String contractAddress, String tokenId) {
@@ -37,9 +43,9 @@ public class NftDao  {
     public TokenResponse getListingData(String tokenContract, String tokenName) {
         ApiHttpClient apiHttpClient = new ApiHttpClient();
         Gson gson = new Gson();
-        String url = "https://api.reservoir.tools/tokens/v7?collection=" + tokenContract + "&tokenName=" + tokenName;
 
-        String response = apiHttpClient.getListings(url);
+        String rl = "https://api.reservoir.tools/tokens/v7?tokens=" + tokenContract + "%3A" + tokenName;
+        String response = apiHttpClient.getListings(rl);
         TokenResponse tokenResponse = gson.fromJson(response, TokenResponse.class);
         return tokenResponse;
     }
@@ -48,9 +54,9 @@ public class NftDao  {
     public TokenResponse getListingData(String tokenContract) {
         ApiHttpClient apiHttpClient = new ApiHttpClient();
         Gson gson = new Gson();
+
         //https://api.reservoir.tools/tokens/v7?collection=0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e&limit=10000"
         String url = "https://api.reservoir.tools/tokens/v7?collection=" + tokenContract + "&limit=100";
-
         String response = apiHttpClient.getListings(url);
         TokenResponse tokenResponse = gson.fromJson(response, TokenResponse.class);
         return tokenResponse;

@@ -15,16 +15,20 @@
 
   <div id="nftCard" th:fragment="nftCard">
     <div class="col">
-      <div class="card">
+
+      <div class="card" >
+        <a th:href="@{/nftDetail/} + ${contractAddress} + '/' + ${nft.tokenId}">
         <div class="img-wrapper">
-          <img class="img-fluid" th:src="${nft.imageSmall}" alt="cat">
+          <img class="img-fluid" th:src="${nft.imageSmall}" alt="cat" id="smallCardImage">
         </div>
         <div class="card-body">
           <p class="card-text" th:text="${nft.name}"></p>
           <h6 th:text="${nft.collectionName}"></h6>
           <p class="card-text"><small th:text="${nft.nativePrice}" class="text-body-secondary"></small></p>
         </div>
+        </a>
       </div>
+
     </div>
   </div>
 

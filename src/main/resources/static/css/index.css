@@ -81,12 +81,24 @@ body {
     padding: 8px;
 }
 
-.card img {
+#largeCardImage {
+    max-width: 500px;
+    max-height: 750px;
+}
+
+#smallCardImage {
     max-width: 250px;
     max-height: 250px;
     width: auto;
     height: auto;
     object-fit: contain;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#collectionBanner {
+    width: fill;
 }
 
 #trendingImage {

@@ -13,7 +13,14 @@
 
 </head>
 <body>
-<div id="loginCard" th:fragment="loginCard">
+
+
+<!-- heading -->
+<div class="sticky-top">
+  <div th:insert="~{fragments/header :: header}"></div>
+</div>
+
+<!-- <div id="loginCard" th:fragment="loginCard"> -->
   <div class="card w-50 mx-auto">
     <div class="card-body py-5 px-md-5">
       <div class="row d-flex justify-content-center">
@@ -21,29 +28,34 @@
           <h2 class="mb-5">Sign in</h2>
           <hr />
           <div class="underline-title"></div>
-          <form th:action="@{/login}" th:object="${login}" method="post">
+
+          <form th:action="@{/login}" method="post">
+            <div th:if="${param.error}">
+              <div class="alert alert-danger">Invalid Email and password.</div>
+            </div>
             <div class="mb-3">
               <label class="form-label">Email address
-                <input th:value="${email}" placeholder="Email" class="form-control">
+                <input placeholder="Email" class="form-control">
               </label>
             </div>
             <div class="mb-3">
               <label class="form-label">Password
-                <input type="password" th:value="${password}" placeholder="Password" class="form-control">
+                <input type="password" placeholder="Password" class="form-control">
               </label>
             </div>
+            <div class="row">
+              <div class="col align-self-center">
+                <button type="submit" class="btn btn-primary">Log in</button>
+              </div>
+            </div>
           </form>
+
           <div class="row">
-            <div class="col align-self-center">
-              <a th:href="@{/dashboardEmployee}" class="btn btn-primary">Log in</a>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col align-self-center">
+           <!-- <div class="col align-self-center">
               <button class="btn btn-link">Forgot your password?</button>
-            </div>
+            </div> -->
             <div class="col align-self-center">
-              <button class="btn btn-link">Sign up!</button>
+              <span><a th:href="@{/register}">Sign up!</a></span>
             </div>
           </div>
         </div>

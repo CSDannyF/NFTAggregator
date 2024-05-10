@@ -17,5 +17,35 @@
     <div th:insert="~{fragments/header :: header}"></div>
   </div>
 
+  <img id="collectionBanner" class="img-fluid" th:src="${collection.banner}" alt="cat">
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col" th:text="${collection.name}">name and logo</div>
+      <div class="col">
+        <div th:text="${collection.floorPriceInCurrency} + ' ' + ${collection.nativeCurrency}"></div>
+        <div>Floor Price</div>
+      </div>
+      <div class="col" >
+        <div th:text="${collection.totalVolume} + ' ' + ${collection.nativeCurrency}"></div>
+        <div>Total volume</div>
+      </div>
+      <div class="col">
+        <div th:text="${collection.tokenCount}"></div>
+        <div>Items</div>
+      </div>
+      <div class="col">royalty</div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4" id="card-row">
+      <!-- render cards here -->
+      <div th:each="nft : ${nfts}" th:insert="~{fragments/nftCard :: nftCard}"></div>
+    </div>
+  </div>
+
 </body>
 </html>

@@ -11,5 +11,6 @@ public class TrendingCollectionDto {
     private double oneDayVolumeChange;
     private double oneDayCollectionVolume;
     private String priceSymbol;
+    private String contractAddress;
     private double nativePrice;
 }

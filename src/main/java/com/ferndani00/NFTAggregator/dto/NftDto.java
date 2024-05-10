@@ -13,12 +13,12 @@ public class NftDto {
     private String imageLarge;
     private String kind;
     private int rarityRank;
-    //private String collection;
     private String collectionId;
     private String collectionName;
     private String priceSymbol;
     private double nativePrice;
     private double usdPrice;
     private String owner;
+    private String ownerShort;
     private String externalSiteUrl;
 }

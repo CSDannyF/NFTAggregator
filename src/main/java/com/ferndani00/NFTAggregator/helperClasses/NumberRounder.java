@@ -7,5 +7,4 @@ public class NumberRounder {
         double rounded = Math.round(input*100);
         return rounded/100;
     }
-
 }

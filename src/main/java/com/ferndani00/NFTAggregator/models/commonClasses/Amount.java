@@ -1,4 +1,4 @@
-package com.ferndani00.NFTAggregator.models.token;
+package com.ferndani00.NFTAggregator.models.commonClasses;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
