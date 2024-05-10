@@ -38,7 +38,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="collection : ${trendingCollectionsDtos}">
+      <tr th:each="collection : ${trendingCollections}">
 
         <td>
           <a th:href="@{/collection/} + ${collection.contractAddress}">
@@ -58,10 +58,6 @@
       </tbody>
     </table>
 
-    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4" id="card-row">
-      <!-- render cards here -->
-      <div th:each="nft : ${nfts}" th:insert="~{fragments/nftCard :: nftCard}"></div>
-    </div>
   </div>
 
 </body>

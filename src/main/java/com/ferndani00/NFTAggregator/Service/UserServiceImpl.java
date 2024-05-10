@@ -17,14 +17,14 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-   // private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     private UserServiceImpl(UserRepository userRepository,
-                            RoleRepository roleRepository/*,
-                            PasswordEncoder passwordEncoder*/) {
+                            RoleRepository roleRepository,
+                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        //this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     public void saveUser(UserDto userDto) {
         User user = new User();
         user.setEmail(userDto.getEmail());
-        //user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         Role role;
         if(userRepository.findAll().isEmpty()) {
             initiateRoles();

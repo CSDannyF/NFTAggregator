@@ -19,8 +19,57 @@ public class NftServiceImpl implements NftService{
     @Autowired
     private NftEndpoint nftEndPoint = new NftEndpoint();
 
+
+    public NftDto getListedNftData(String contractAddress, String id)
+    {
+        TokenResponse response = nftEndPoint.getListingData(contractAddress, id);
+        return mapToNftDto(response);
+    }
+
+    public List<NftDto> getListedNfts(String contractAddress)
+    {
+        TokenResponse response = nftEndPoint.getListingData(contractAddress);
+        return mapToNftDtoList(response);
+    }
+
+    public NftDto mapToNftDto(TokenResponse response)
+    {
+        NftDto nftDto = new NftDto();
+
+        TokenWrapper nft = response.getTokens().get(0);
+
+        nftDto.setContract(nft.getToken().getContract());
+        nftDto.setTokenId(nft.getToken().getTokenId());
+        nftDto.setName(nft.getToken().getName());
+        nftDto.setImageSmall(nft.getToken().getImageSmall());
+        nftDto.setImageLarge(nft.getToken().getImageLarge());
+        nftDto.setKind(nft.getToken().getKind());
+        nftDto.setRarityRank(nft.getToken().getRarityRank());
+        nftDto.setCollectionId(nft.getToken().getCollection().getId());
+        nftDto.setCollectionName(nft.getToken().getCollection().getName());
+        nftDto.setOwner(nft.getToken().getOwner());
+
+        //check als de nft te koopt staat, indien niet wordt dit niet geset
+        if(nft.getMarket().getFloorAsk().getPrice() != null) {
+            nftDto.setPriceSymbol(nft.getMarket().getFloorAsk().getPrice().getCurrency().getSymbol());
+            nftDto.setExternalSiteUrl(nft.getMarket().getFloorAsk().getSource().getUrl());
+
+            double nativePrice = NumberRounder.rounder(nft.getMarket().getFloorAsk().getPrice().getAmount().getDecimal());
+            double usdPrice = NumberRounder.rounder(nft.getMarket().getFloorAsk().getPrice().getAmount().getUsd());
+
+            nftDto.setNativePrice(nativePrice);
+            nftDto.setUsdPrice(usdPrice);
+        }
+
+        //eigenaar toevoegen
+        String ownerShort = nft.getToken().getOwner().substring(0,6); //Hier maak ik het adres van de eigenaar korter
+        nftDto.setOwnerShort(ownerShort);
+
+        return nftDto;
+    }
+
     //Mapper om de listedTokend/Nfts te mappen in een vereenvoudigde klaqqe
-    public List<NftDto> mapToNftDto(TokenResponse tokenResponse)
+    public List<NftDto> mapToNftDtoList(TokenResponse tokenResponse)
     {
         List<NftDto> nftDtos = new ArrayList<>();
 
