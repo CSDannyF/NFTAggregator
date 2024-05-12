@@ -20,11 +20,12 @@ public class SecurityConfiguration {
     private UserDetailsService userDetailsService;
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/register/**", "/index", "/login/**", "/collection/**", "/nftDetail/**","/", "/css/**", "/static/**", "fonts/**", "/js/**").permitAll()
-                                .requestMatchers("/account").hasRole("ADMIN")
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/register/**", "/index", "/login/**", "/collection/**", "/nftDetail/**","/", "/css/**", "/static/**", "fonts/**", "/js/**").permitAll()
+                        .requestMatchers("/account").hasRole("USER")
+                        .requestMatchers("/account").hasRole("ADMIN")
 
                 )
                 .formLogin(login -> login
@@ -40,17 +41,12 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-
-
-
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
-
 
     @Bean
     public static PasswordEncoder passwordEncoder() {

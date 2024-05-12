@@ -24,18 +24,18 @@
                 <hr />
                 <div class="underline-title"></div>
 
-                <form th:action="@{/register}" method="post">
+                <form th:action="@{/register}" method="post" th:object="${userDto}">
 
                     <div class="mb-3">
-                        <label class="form-label">Email address
-                            <input  placeholder="Email"type="email" class="form-control">
-                        </label>
+                        <label class="form-label">Email address</label>
+                        <input th:field="*{email}" placeholder="Email"type="email" class="form-control">
+                        <p th:errors="*{email}" class="text-danger" th:if="${#fields.hasErrors('email')}"></p>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Password
-                            <input type="password" placeholder="Password" class="form-control">
-                        </label>
+                        <label class="form-label">Password</label>
+                        <input th:field="*{password}" type="password" placeholder="Password" class="form-control">
+                        <p th:errors="*{password}" class="text-danger" th:if="${#fields.hasErrors('password')}"></p>
                     </div>
 
                     <div class="row">

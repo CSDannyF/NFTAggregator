@@ -5,6 +5,7 @@ import com.ferndani00.NFTAggregator.models.databaseModels.Role;
 import com.ferndani00.NFTAggregator.models.databaseModels.User;
 import com.ferndani00.NFTAggregator.repository.RoleRepository;
 import com.ferndani00.NFTAggregator.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
     private UserServiceImpl(UserRepository userRepository,
                             RoleRepository roleRepository,
                             PasswordEncoder passwordEncoder) {
@@ -40,6 +42,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         Role role;
+
         if(userRepository.findAll().isEmpty()) {
             initiateRoles();
             role = roleRepository.findByName("ROLE_ADMIN");
@@ -52,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getById(long id) {
-        return mapToUserDto(userRepository.getReferenceById(id));
+        return mapToUserDto(userRepository.findById(id).get());
     }
 
     // hier roep ik 2x de db aan, wil dit maar 1 x doen

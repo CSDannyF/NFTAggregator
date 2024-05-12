@@ -5,6 +5,9 @@ import com.ferndani00.NFTAggregator.Service.UserServiceImpl;
 import com.ferndani00.NFTAggregator.dto.UserDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,17 +19,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LoginController {
 
+    @Autowired
     private UserService userService;
-
-    private UserDto userDto = new UserDto();
 
     public LoginController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/login")
-    public String loginForm(Model model) {
-        model.addAttribute("user", userDto);
+    public String loginForm() {
         return "login";
     }
 
@@ -37,6 +38,7 @@ public class LoginController {
 
     @GetMapping("/register")
     public String registerForm(Model model) {
+        UserDto userDto = new UserDto();
         model.addAttribute("userDto", userDto);
         return "register";
     }
@@ -54,6 +56,7 @@ public class LoginController {
             model.addAttribute("userDto", userDto);
             return "register";
         }
+        System.out.println("password in controller: " + userDto.getPassword());
         userService.saveUser(userDto);
         return "login";
     }
