@@ -50,7 +50,7 @@ public class NftEndpoint {
         return tokenResponse;
     }
 
-    // dezelfde api als hierboven maar hier haal ik alle listed nft's van een collectie op
+    // dezelfde api als hierboven, maar hier haal ik alle listed nft's van een collectie op
     public TokenResponse getListingData(String tokenContract) {
         ApiHttpClient apiHttpClient = new ApiHttpClient();
         Gson gson = new Gson();

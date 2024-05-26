@@ -1,7 +1,5 @@
 package com.ferndani00.NFTAggregator.Controller;
 
-import com.ferndani00.NFTAggregator.Endpoints.CollectionEndpoint;
-import com.ferndani00.NFTAggregator.Endpoints.NftEndpoint;
 import com.ferndani00.NFTAggregator.Service.NftServiceImpl;
 import com.ferndani00.NFTAggregator.Service.CollectionServiceImpl;
 import com.ferndani00.NFTAggregator.dto.NftDto;

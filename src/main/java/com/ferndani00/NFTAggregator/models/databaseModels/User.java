@@ -38,7 +38,7 @@ public class User {
             joinColumns = {@JoinColumn(name = "userId")},
             inverseJoinColumns = {@JoinColumn(name = "nftId")}
     )
-    private Set<Nft> ownedNfts;
+    private List<Nft> ownedNfts;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
@@ -46,7 +46,7 @@ public class User {
             joinColumns = {@JoinColumn(name = "userId")},
             inverseJoinColumns = {@JoinColumn(name = "nftId")}
     )
-    private Set<Nft> FavoritedNfts;
+    private List<Nft> FavoritedNfts;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
@@ -54,7 +54,7 @@ public class User {
             joinColumns = {@JoinColumn(name = "userId")},
             inverseJoinColumns = {@JoinColumn(name = "nftId")}
     )
-    private Set<Nft> nftsInCart;
+    private List<Nft> nftsInCart;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(

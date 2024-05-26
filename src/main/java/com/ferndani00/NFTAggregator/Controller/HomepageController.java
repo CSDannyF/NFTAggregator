@@ -1,7 +1,6 @@
 package com.ferndani00.NFTAggregator.Controller;
 
 import com.ferndani00.NFTAggregator.Service.CollectionServiceImpl;
-import com.ferndani00.NFTAggregator.dto.NftCollectionDto;
 import com.ferndani00.NFTAggregator.dto.TrendingCollectionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

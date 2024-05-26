@@ -17,13 +17,13 @@ public class NftCollection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long collectionId;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = true)
     private String address;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String slug;
 
     @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)

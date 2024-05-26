@@ -1,10 +1,18 @@
 package com.ferndani00.NFTAggregator.Service;
 
+import com.ferndani00.NFTAggregator.Endpoints.CollectionEndpoint;
 import com.ferndani00.NFTAggregator.Endpoints.NftEndpoint;
 import com.ferndani00.NFTAggregator.dto.NftDto;
 import com.ferndani00.NFTAggregator.helperClasses.NumberRounder;
+import com.ferndani00.NFTAggregator.models.collectionResponse.CollectionResponse;
+import com.ferndani00.NFTAggregator.models.databaseModels.Nft;
+import com.ferndani00.NFTAggregator.models.databaseModels.NftCollection;
+import com.ferndani00.NFTAggregator.models.databaseModels.User;
 import com.ferndani00.NFTAggregator.models.token.TokenResponse;
 import com.ferndani00.NFTAggregator.models.token.TokenWrapper;
+import com.ferndani00.NFTAggregator.repository.NftCollectionRepository;
+import com.ferndani00.NFTAggregator.repository.NftRepository;
+import com.ferndani00.NFTAggregator.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -14,31 +22,134 @@ import java.util.List;
 
 @Component
 @Service
-public class NftServiceImpl implements NftService{
+public class NftServiceImpl implements NftService {
 
     @Autowired
-    private NftEndpoint nftEndPoint = new NftEndpoint();
+    private NftRepository nftRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
-    public NftDto getListedNftData(String contractAddress, String id)
-    {
-        TokenResponse response = nftEndPoint.getListingData(contractAddress, id);
-        return mapToNftDto(response);
+    @Autowired
+    private NftCollectionRepository nftCollectionRepository;
+
+    @Autowired
+    private NftEndpoint nftEndPoint;
+
+    @Autowired
+    private CollectionEndpoint collectionEndpoint;
+
+    @Override
+    public List<NftDto> getAll() {
+        return null;
     }
 
-    public List<NftDto> getListedNfts(String contractAddress)
-    {
+    @Autowired
+    private CollectionServiceImpl collectionService;
+
+    @Override
+    public void save(NftDto nftDto) {
+        Nft nft = mapDtoToModel(nftDto);
+
+        nft.setCollection(nftCollectionRepository.findByAddress(nft.getContractAddress()));
+
+        nftRepository.save(nft);
+
+
+        if(userRepository.findByEmail(nftDto.getOwner()) != null)
+        {
+            User user = userRepository.findByEmail(nftDto.getOwner());
+            user.getOwnedNfts().add(nft);
+            userRepository.save(user);
+        } else {
+            System.out.println("email not found");
+        }
+
+
+    }
+
+    @Override
+    public NftDto getById(long id) {
+        return null;
+    }
+
+    public NftDto getListedNftData(String contractAddress, String id) {
+        TokenResponse response = nftEndPoint.getListingData(contractAddress, id);
+        return mapResponseToDto(response);
+    }
+
+    public List<NftDto> getListedNfts(String contractAddress) {
         TokenResponse response = nftEndPoint.getListingData(contractAddress);
         return mapToNftDtoList(response);
     }
 
-    public NftDto mapToNftDto(TokenResponse response)
+
+    //Moet mss via de endpoint worden gedaan om meer data te krijgen
+    public NftDto mapModelToDto(Nft nft) {
+        NftDto nftDto = new NftDto();
+        nftDto.setContractAddress(nft.getContractAddress());
+        nftDto.setCollectionName(nftDto.getCollectionName());
+        nftDto.setNativePrice(nft.getNftId());
+        nftDto.setImageLarge(nft.getImageUrl());
+        return nftDto;
+    }
+
+    public Nft mapDtoToModel(NftDto nftDto)
     {
+        Nft nft = new Nft();
+        nft.setTokenId(nftDto.getTokenId());
+        nft.setContractAddress(nftDto.getContractAddress());
+        nft.setPrice(nftDto.getNativePrice());
+        nft.setImageUrl(nftDto.getImageLarge());
+
+        CollectionResponse collectionResponse = collectionEndpoint.getCollection(nftDto.getCollectionId());
+        NftCollection nftCollection = collectionService.mapCollectionResponseToModel(collectionResponse);
+        nft.setCollection(nftCollection);
+        return nft;
+    }
+
+    public List<NftDto> mapModelToDtoList(List<Nft> nfts) {
+        List<NftDto> nftDtos = new ArrayList<>();
+        for (Nft nft : nfts) {
+            NftDto nftDto = new NftDto();
+            nftDto.setContractAddress(nft.getContractAddress());
+            nftDto.setName(nft.getCollection().getName());
+            nftDto.setNativePrice(nft.getNftId());
+            nftDto.setImageLarge(nft.getImageUrl());
+            nftDto.setTokenId(nft.getTokenId());
+
+            nftDtos.add(nftDto);
+        }
+        return nftDtos;
+    }
+
+    public List<Nft> mapDtoToModelList(List<NftDto> nftDos) {
+        List<Nft> nfts = new ArrayList<>();
+        for (NftDto nftDto : nftDos) {
+            Nft nft = new Nft();
+            nft.setContractAddress(nftDto.getContractAddress());
+
+            CollectionEndpoint collectionEndpoint = new CollectionEndpoint();
+            CollectionResponse collectionResponse = collectionEndpoint.getCollection(nft.getContractAddress());
+
+            CollectionServiceImpl collectionService = new CollectionServiceImpl();
+            NftCollection nftCollection = collectionService.mapCollectionResponseToModel(collectionResponse);
+
+            nft.setCollection(nftCollection);
+            nft.setPrice(nftDto.getNativePrice());
+            nft.setImageUrl(nftDto.getImageLarge());
+
+            nfts.add(nft);
+        }
+        return nfts;
+    }
+
+    public NftDto mapResponseToDto(TokenResponse response) {
         NftDto nftDto = new NftDto();
 
         TokenWrapper nft = response.getTokens().get(0);
 
-        nftDto.setContract(nft.getToken().getContract());
+        nftDto.setContractAddress(nft.getToken().getContract());
         nftDto.setTokenId(nft.getToken().getTokenId());
         nftDto.setName(nft.getToken().getName());
         nftDto.setImageSmall(nft.getToken().getImageSmall());
@@ -50,7 +161,7 @@ public class NftServiceImpl implements NftService{
         nftDto.setOwner(nft.getToken().getOwner());
 
         //check als de nft te koopt staat, indien niet wordt dit niet geset
-        if(nft.getMarket().getFloorAsk().getPrice() != null) {
+        if (nft.getMarket().getFloorAsk().getPrice() != null) {
             nftDto.setPriceSymbol(nft.getMarket().getFloorAsk().getPrice().getCurrency().getSymbol());
             nftDto.setExternalSiteUrl(nft.getMarket().getFloorAsk().getSource().getUrl());
 
@@ -62,21 +173,19 @@ public class NftServiceImpl implements NftService{
         }
 
         //eigenaar toevoegen
-        String ownerShort = nft.getToken().getOwner().substring(0,6); //Hier maak ik het adres van de eigenaar korter
+        String ownerShort = nft.getToken().getOwner().substring(0, 6); //Hier maak ik het adres van de eigenaar korter
         nftDto.setOwnerShort(ownerShort);
 
         return nftDto;
     }
 
     //Mapper om de listedTokend/Nfts te mappen in een vereenvoudigde klaqqe
-    public List<NftDto> mapToNftDtoList(TokenResponse tokenResponse)
-    {
+    public List<NftDto> mapToNftDtoList(TokenResponse tokenResponse) {
         List<NftDto> nftDtos = new ArrayList<>();
 
-        for(TokenWrapper tokenWrapper : tokenResponse.getTokens())
-        {
+        for (TokenWrapper tokenWrapper : tokenResponse.getTokens()) {
             NftDto nftDto = new NftDto();
-            nftDto.setContract(tokenWrapper.getToken().getContract());
+            nftDto.setContractAddress(tokenWrapper.getToken().getContract());
             nftDto.setTokenId(tokenWrapper.getToken().getTokenId());
             nftDto.setName(tokenWrapper.getToken().getName());
             nftDto.setImageSmall(tokenWrapper.getToken().getImageSmall());
@@ -88,7 +197,7 @@ public class NftServiceImpl implements NftService{
             nftDto.setOwner(tokenWrapper.getToken().getOwner());
 
             //check als de nft te koopt staat, indien niet wordt dit niet geset
-            if(tokenWrapper.getMarket().getFloorAsk().getPrice() != null) {
+            if (tokenWrapper.getMarket().getFloorAsk().getPrice() != null) {
                 nftDto.setPriceSymbol(tokenWrapper.getMarket().getFloorAsk().getPrice().getCurrency().getSymbol());
                 nftDto.setExternalSiteUrl(tokenWrapper.getMarket().getFloorAsk().getSource().getUrl());
 
@@ -100,26 +209,12 @@ public class NftServiceImpl implements NftService{
             }
 
             //eigenaar toevoegen
-            String ownerShort = tokenWrapper.getToken().getOwner().substring(0,6); //Hier maak ik het adres van de eigenaar korter
-            nftDto.setOwnerShort(ownerShort);
+            //String ownerShort = tokenWrapper.getToken().getOwner().substring(0, 6); //Hier maak ik het adres van de eigenaar korter
+            //nftDto.setOwnerShort(ownerShort);
 
             nftDtos.add(nftDto);
         }
         return nftDtos;
     }
-
-    @Override
-    public List<NftDto> getAll() {
-        return null;
-    }
-
-    @Override
-    public void save(NftDto nftDto) {
-
-    }
-
-    @Override
-    public NftDto getById(long id) {
-        return null;
-    }
 }
+

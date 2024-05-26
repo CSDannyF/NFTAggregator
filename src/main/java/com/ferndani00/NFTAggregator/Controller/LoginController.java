@@ -1,17 +1,12 @@
 package com.ferndani00.NFTAggregator.Controller;
 
 import com.ferndani00.NFTAggregator.Service.UserService;
-import com.ferndani00.NFTAggregator.Service.UserServiceImpl;
 import com.ferndani00.NFTAggregator.dto.UserDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,7 +51,6 @@ public class LoginController {
             model.addAttribute("userDto", userDto);
             return "register";
         }
-        System.out.println("password in controller: " + userDto.getPassword());
         userService.saveUser(userDto);
         return "login";
     }

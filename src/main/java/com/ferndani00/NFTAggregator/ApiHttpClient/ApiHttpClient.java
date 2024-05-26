@@ -1,7 +1,5 @@
 package com.ferndani00.NFTAggregator.ApiHttpClient;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;

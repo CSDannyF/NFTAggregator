@@ -23,10 +23,22 @@
     <div class="col-5">
       <div class="card" id="largeCardImage">
         <img th:src="${nft.imageLarge}" class="card-img-top" alt="...">
-        <div class="btn">
-          <input type="checkbox" class="btn-info btn-check" name="vbtn-radio" id="favoriteNft" autocomplete="off">
-          <label class="btn btn-outline-info" for="favoriteNft">favorite</label>
-        </div>
+
+        <form th:action="@{/nftDetail/} + ${contractAddress} + '/' + ${nft.tokenId}" method="post" th:object="${nft}">
+          <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+
+            <button class="btn btn-primary" type="submit" th:href="@{/account}">buy</button>
+            <button class="btn btn-primary" type="submit" th:href="@{/index}">Favorites</button>
+            <!--
+            <input type="checkbox" th:value="${nft.tokenId}" class="btn-check" id="favorite" autocomplete="off">
+            <label class="btn btn-outline-primary" for="favorite" th:field="${nft.favorite}">Favorite</label>
+
+            <input type="checkbox"  class="btn-check" id="cart" autocomplete="off">
+            <label class="btn btn-outline-primary" for="cart">Add to cart</label>
+            -->
+          </div>
+        </form>
+
       </div>
     </div>
 

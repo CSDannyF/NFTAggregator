@@ -11,4 +11,5 @@ public class NftCollectionDto {
     private String priceSymbol;
     private String contractAddress;
     private double nativePrice;
+    private String slug;
 }

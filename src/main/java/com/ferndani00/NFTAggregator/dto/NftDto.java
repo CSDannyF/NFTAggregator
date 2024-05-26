@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class NftDto {
-    private String contract;
+    private String contractAddress;
     private String tokenId;
     private String name;
     private String imageSmall;
@@ -21,4 +21,5 @@ public class NftDto {
     private String owner;
     private String ownerShort;
     private String externalSiteUrl;
+    private boolean favorite;
 }

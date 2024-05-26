@@ -15,9 +15,15 @@
     <!-- heading -->
     <div th:replace="~{fragments/header :: header}"></div>
 
+    <div class="row">
+        <div class="col-5">
+            <div th:text="'User: ' + ${userDto.email}"></div>
+            <div th:text="'Balance: ' + ${userDto.balance}"></div>
+        </div>
+    </div>
 
 
-        <nav>
+    <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <button class="nav-link active" id="owned" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Owned NFTs</button>
                 <button class="nav-link" id="favorited" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Favorited</button>
@@ -25,11 +31,40 @@
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="owned" tabindex="0">These are mine
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="owned" tabindex="0">
+
+                <!-- nftCards -->
+                <div class="row">
+                    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4" id="card-row">
+                        <!-- render cards here -->
+                        <div th:each="nft : ${ownedNfts}" th:insert="~{fragments/nftCard :: nftCard}"></div>
+                    </div>
+                </div>
 
             </div>
-            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="favorited" tabindex="0">These I like</div>
-            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="cart" tabindex="0">These I'm purchasing</div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="favorited" tabindex="0">
+
+                <!-- nftCards -->
+                <div class="row">
+                    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+                        <!-- render cards here -->
+                        <div th:each="nft : ${FavoriteNfts}" th:insert="~{fragments/nftCard :: nftCard}"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="cart" tabindex="0">
+
+
+                <!-- nftCards -->
+                <div class="row">
+                    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+                        <!-- render cards here -->
+                        <div th:each="nft : ${nftsInCart}" th:insert="~{fragments/nftCard :: nftCard}"></div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
 

@@ -18,10 +18,10 @@ public class Nft {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long nftId;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String contractAddress;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String tokenId;
 
     @ManyToOne
@@ -31,7 +31,7 @@ public class Nft {
     @Column
     private double price;  //moet nativePrice worden
 
-    @Column
+    @Column(length = 400)
     private String imageUrl;
 
 }

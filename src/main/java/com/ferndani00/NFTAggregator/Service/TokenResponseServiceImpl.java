@@ -14,7 +14,7 @@ import java.util.List;
 public class TokenResponseServiceImpl {
 
     @Autowired
-    private NftEndpoint nftEndPoint = new NftEndpoint();
+    private NftEndpoint nftEndPoint;
 
     public TokenResponse getCollectionListings(String contractAdress)
     {
