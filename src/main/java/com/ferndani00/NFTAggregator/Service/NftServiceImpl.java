@@ -3,6 +3,7 @@ package com.ferndani00.NFTAggregator.Service;
 import com.ferndani00.NFTAggregator.Endpoints.CollectionEndpoint;
 import com.ferndani00.NFTAggregator.Endpoints.NftEndpoint;
 import com.ferndani00.NFTAggregator.dto.NftDto;
+import com.ferndani00.NFTAggregator.dto.UserDto;
 import com.ferndani00.NFTAggregator.helperClasses.NumberRounder;
 import com.ferndani00.NFTAggregator.models.collectionResponse.CollectionResponse;
 import com.ferndani00.NFTAggregator.models.databaseModels.Nft;
@@ -45,32 +46,86 @@ public class NftServiceImpl implements NftService {
     }
 
     @Autowired
-    private CollectionServiceImpl collectionService;
+    private NftCollectionServiceImpl collectionService;
+
+    //TODO in nftowned nog de owner setten
+    @Override
+    public NftDto addToCart(NftDto nftDto, UserDto userDto) {
+        Nft nft = mapDtoToModel(nftDto);
+        nft.setCollection(nftCollectionRepository.findByAddress(nft.getContractAddress()));
+        List<Nft> existing = userRepository.findByEmail(userDto.getEmail()).getFavoritedNfts();
+        User user = userRepository.findByEmail(userDto.getEmail());
+        User newUser = new User();
+
+        //If nft in cart, not adding again
+        if (!isNftInList(existing, nft)) {
+            user.getNftsInCart().add(nft);
+            newUser = userRepository.save(user);
+        }
+        Nft newNftInCart = newUser.getNftsInCart().getLast();
+        return mapModelToDto(newNftInCart);
+    }
 
     @Override
-    public void save(NftDto nftDto) {
+    public NftDto addToFavorites(NftDto nftDto, UserDto userDto) {
         Nft nft = mapDtoToModel(nftDto);
-
         nft.setCollection(nftCollectionRepository.findByAddress(nft.getContractAddress()));
+        List<Nft> existing = userRepository.findByEmail(userDto.getEmail()).getFavoritedNfts();
+        User user = userRepository.findByEmail(userDto.getEmail());
+        User newUser = new User();
 
-        nftRepository.save(nft);
-
-
-        if(userRepository.findByEmail(nftDto.getOwner()) != null)
-        {
-            User user = userRepository.findByEmail(nftDto.getOwner());
-            user.getOwnedNfts().add(nft);
-            userRepository.save(user);
-        } else {
-            System.out.println("email not found");
+        //If nft in favoriteList, not adding again
+        if (!isNftInList(existing, nft)) {
+            user.getFavoritedNfts().add(nft);
+            newUser = userRepository.save(user);
         }
+        Nft newfavoriteNft = newUser.getFavoritedNfts().getLast();
+        return mapModelToDto(newfavoriteNft);
+    }
 
+    @Override
+    public void removeFromCart(NftDto nftDto, UserDto userDto) {
 
+        Nft nft = mapDtoToModel(nftDto);
+        User user = userRepository.findByEmail(userDto.getEmail());
+        Nft nftToBeRemoved = getNftInList(user.getNftsInCart(), nft);
+
+        user.getNftsInCart().remove(nftToBeRemoved);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void deleteFromFavorites(NftDto nftDto, UserDto userDto) {
+
+    }
+
+    @Override
+    public void sellOwnedNft(NftDto nftDto) {
+
+    }
+
+    @Override
+    public List<NftDto> buyNftsInCart(UserDto userDto) {
+        User user = userRepository.findByEmail(userDto.getEmail());
+
+        user.getOwnedNfts().addAll(user.getNftsInCart());
+        user.getNftsInCart().removeAll(user.getNftsInCart());
+
+        User newUser = userRepository.save(user);
+        List<NftDto> newOwnedNft = mapModelToDtoList(newUser.getOwnedNfts());
+        return newOwnedNft;
     }
 
     @Override
     public NftDto getById(long id) {
         return null;
+    }
+
+    @Override
+    public NftDto getByContractAddressAndTokenId(String contractAddress, String tokenId) {
+        Nft nft = new Nft();
+        nft = nftRepository.findByContractAddressAndTokenId(contractAddress, tokenId);
+        return mapModelToDto(nft);
     }
 
     public NftDto getListedNftData(String contractAddress, String id) {
@@ -94,8 +149,7 @@ public class NftServiceImpl implements NftService {
         return nftDto;
     }
 
-    public Nft mapDtoToModel(NftDto nftDto)
-    {
+    public Nft mapDtoToModel(NftDto nftDto) {
         Nft nft = new Nft();
         nft.setTokenId(nftDto.getTokenId());
         nft.setContractAddress(nftDto.getContractAddress());
@@ -113,11 +167,13 @@ public class NftServiceImpl implements NftService {
         for (Nft nft : nfts) {
             NftDto nftDto = new NftDto();
             nftDto.setContractAddress(nft.getContractAddress());
-            nftDto.setName(nft.getCollection().getName());
             nftDto.setNativePrice(nft.getNftId());
             nftDto.setImageLarge(nft.getImageUrl());
             nftDto.setTokenId(nft.getTokenId());
-
+            if (nft.getCollection() != null) //waarom is dit null?
+            {
+                nftDto.setName(nft.getCollection().getName());
+            }
             nftDtos.add(nftDto);
         }
         return nftDtos;
@@ -132,7 +188,7 @@ public class NftServiceImpl implements NftService {
             CollectionEndpoint collectionEndpoint = new CollectionEndpoint();
             CollectionResponse collectionResponse = collectionEndpoint.getCollection(nft.getContractAddress());
 
-            CollectionServiceImpl collectionService = new CollectionServiceImpl();
+            NftCollectionServiceImpl collectionService = new NftCollectionServiceImpl();
             NftCollection nftCollection = collectionService.mapCollectionResponseToModel(collectionResponse);
 
             nft.setCollection(nftCollection);
@@ -146,7 +202,6 @@ public class NftServiceImpl implements NftService {
 
     public NftDto mapResponseToDto(TokenResponse response) {
         NftDto nftDto = new NftDto();
-
         TokenWrapper nft = response.getTokens().get(0);
 
         nftDto.setContractAddress(nft.getToken().getContract());
@@ -215,6 +270,25 @@ public class NftServiceImpl implements NftService {
             nftDtos.add(nftDto);
         }
         return nftDtos;
+    }
+
+    private Nft getNftInList(List<Nft> nftList, Nft nft) {
+        for (Nft nft1 : nftList) {
+            if (nft1.getContractAddress().equals(nft.getContractAddress()) && nft1.getTokenId().equals(nft.getTokenId())) {
+                nft = nft1;
+            }
+        }
+        return nft;
+    }
+
+    //mss enkel degene hierboven gebruiken met isEmpty()
+    private boolean isNftInList(List<Nft> nftList, Nft nft) {
+        boolean isInList = false;
+        for (Nft nft1 : nftList) {
+            if (nft1.getContractAddress().equals(nft.getContractAddress()) && nft1.getTokenId().equals(nft.getTokenId()))
+                isInList = true;
+        }
+        return isInList;
     }
 }
 

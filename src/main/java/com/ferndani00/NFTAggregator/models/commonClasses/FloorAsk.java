@@ -8,10 +8,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class FloorAsk {
     public String id;
+
     public Price price;
     public String maker;
     public int validFrom;

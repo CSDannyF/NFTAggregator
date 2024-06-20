@@ -13,5 +13,5 @@ public interface NftCollectionService {
     void saveAll(List<NftCollection> nftCollections);
     CollectionDto getById(long id);
 
-    NftCollectionDto getByName(String name);
+    List<NftCollectionDto> getCollectionsByName(String name);
 }

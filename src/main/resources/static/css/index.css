@@ -1,23 +1,6 @@
 
-/* Fonts
--------- */
-@font-face {
-  font-family: 'Abril Fatface';
-  src: url('../fonts/AbrilFatface-Regular.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('../fonts/Roboto-Black.ttf') format('truetype'),
-  src: url('../fonts/Roboto-Light.ttf') format('truetype'),
-  src: url('../fonts/Roboto-Medium.ttf') format('truetype'),
-  src: url('../fonts/Roboto-Regular.ttf') format('truetype')
-  ;
-}
-
 /* ---- Homepage ---- */
 body {
-    font-family: 'Roboto';
     font-weight: 100;
     background: rgb(255,255,255);
     background: linear-gradient(48deg, rgba(255,255,255,1) 0%, rgba(45,217,255,1) 100%);
@@ -33,7 +16,6 @@ body {
 }
 
 .navbar-brand {
-    font-family: 'Abril Fatface';
     font-size: 30px;
     font-weight: 400;
     }
@@ -44,7 +26,6 @@ body {
 }
 
 .jumbotron {
-    font-family: 'Abril Fatface';
     display: flex;
     justify-content: center;
     align-items: center;

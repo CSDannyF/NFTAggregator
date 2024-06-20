@@ -3,6 +3,7 @@ package com.ferndani00.NFTAggregator.Endpoints;
 import com.ferndani00.NFTAggregator.ApiHttpClient.ApiHttpClient;
 import com.ferndani00.NFTAggregator.models.collectionResponse.CollectionResponse;
 import com.ferndani00.NFTAggregator.models.openseaResponse.Root;
+import com.ferndani00.NFTAggregator.models.searchResponse.SearchResponse;
 import com.ferndani00.NFTAggregator.models.trendingCollections.TrendingCollectionResponse;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
@@ -58,5 +59,17 @@ public class CollectionEndpoint {
         String response = apiHttpClient.getRequest(url);
         CollectionResponse collectionResponse = gson.fromJson(response, CollectionResponse.class);
         return collectionResponse;
+    }
+
+    public SearchResponse getSearchResponse(String search)
+    {
+        ApiHttpClient apiHttpClient = new ApiHttpClient();
+        Gson gson = new Gson();
+
+        //https://api.reservoir.tools/search/collections/v2?name=doodles&excludeSpam=true&excludeNsfw=true
+        String url = "https://api.reservoir.tools/search/collections/v2?name=" + search + "&excludeSpam=true&excludeNsfw=true";
+        String response = apiHttpClient.getRequest(url);
+        SearchResponse searchResponse = gson.fromJson(response, SearchResponse.class);
+        return searchResponse;
     }
 }

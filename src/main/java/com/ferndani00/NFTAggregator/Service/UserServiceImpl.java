@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
     // hier roep ik 2x de db aan, wil dit maar 1 x doen
     @Override
-    public UserDto findByEmail(String email) {
+    public UserDto getByEmail(String email) {
         UserDto userDto = new UserDto();
         if(userRepository.findByEmail(email) != null) {
             userDto = mapToUserDto(userRepository.findByEmail(email));

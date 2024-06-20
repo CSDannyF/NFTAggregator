@@ -8,5 +8,5 @@ public interface UserService {
     List<UserDto> getAll();
     void saveUser(UserDto userDto);
     UserDto getById(long id);
-    UserDto findByEmail(String email);
+    UserDto getByEmail(String email);
 }

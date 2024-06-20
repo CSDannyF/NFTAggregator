@@ -19,16 +19,18 @@ public class SecurityConfiguration {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Bean
+    public static PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     // voorlopig even zo gedaan want er loopt plots iets mis, buh
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/register/**", "/index", "/login/**", "/collection/**", "/nftDetail/**","/", "/css/**", "/static/**", "fonts/**", "/js/**", "/account").permitAll()
-                        //.requestMatchers("/account").hasRole("USER")
-                        //.requestMatchers("/account").hasRole("ADMIN")
-
+                        .requestMatchers("/register/**", "/index", "/login/**", "/collection/**", "/nftDetail/**", "/", "/css/**", "/static/**", "/fonts/**", "/js/**", "/account", "/addToCart/**", "/search/**").permitAll()
+                        .requestMatchers("/account", "/addToCart/{contractAddress}/{tokenId}", "/addToFavorites/**", "/removeFromCart/**", "/checkout/**", "/buyNftsInCart").hasAnyRole("USER", "ADMIN")
                 )
                 .formLogin(login -> login
                         .loginPage("/login")
@@ -48,10 +50,5 @@ public class SecurityConfiguration {
         auth
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
-    }
-
-    @Bean
-    public static PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
