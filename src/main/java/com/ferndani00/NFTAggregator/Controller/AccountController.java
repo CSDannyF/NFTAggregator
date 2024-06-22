@@ -106,8 +106,10 @@ public class AccountController {
             model.addAttribute("ownedNfts", userDto.getOwnedNfts());
             model.addAttribute("favoriteNfts", userDto.getFavoriteNfts());
             model.addAttribute("nftsInCart", userDto.getNftsInCart());
-            model.addAttribute("error", true);
-            return "redirect:/account"; // Redirect to account page with error message
+
+            model.addAttribute("alertType", "warning");
+            model.addAttribute("alertMessage", "Your balance is to low.");
+            return "account"; // Redirect to account page with error message
         }
 
         // Update balance and purchase NFTs if balance is sufficient
@@ -119,9 +121,11 @@ public class AccountController {
         model.addAttribute("ownedNfts", userDto.getOwnedNfts());
         model.addAttribute("favoriteNfts", userDto.getFavoriteNfts());
         model.addAttribute("nftsInCart", userDto.getNftsInCart());
-        model.addAttribute("error", false);
 
-        return "redirect:/account"; // Consider redirecting to a success page after purchase
+        model.addAttribute("alertType", "succes");
+        model.addAttribute("alertMessage", "Congrats on your new Nft's!.");
+
+        return "account"; // Consider redirecting to a success page after purchase
     }
 
     @GetMapping("/checkout")

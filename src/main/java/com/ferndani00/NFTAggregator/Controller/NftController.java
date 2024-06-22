@@ -63,22 +63,16 @@ public class NftController {
         model.addAttribute("userDto", userDto);
         model.addAttribute("ownedNfts", userDto.getOwnedNfts());
 
-        for (NftDto nft1 : userDto.getOwnedNfts()) {
-            if (nft1.getContractAddress().equals(nftDto.getContractAddress()) && nft1.getTokenId().equals(nftDto.getTokenId())) {
+        if (userDto.getOwnedNfts() != null) {
+            for (NftDto nft1 : userDto.getOwnedNfts()) {
+                if (nft1.getContractAddress().equals(nftDto.getContractAddress()) && nft1.getTokenId().equals(nftDto.getTokenId())) {
 
-                model.addAttribute("alertType", "info");
-                model.addAttribute("alertMessage", "You already own this NFT.");
-                return "account";
+                    model.addAttribute("alertType", "info");
+                    model.addAttribute("alertMessage", "You already own this NFT.");
+                    return "account";
+                }
             }
         }
-
-        /*
-        model.addAttribute("collection", nftCollectionDto);
-        model.addAttribute("nft", nftDto);
-        model.addAttribute("userDto", userDto);
-        model.addAttribute("ownedNfts", userDto.getOwnedNfts());
-         */
-
         nftService.addToCart(nftDto, userDto);
 
         model.addAttribute("alertType", "success");
