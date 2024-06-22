@@ -16,7 +16,9 @@
     <div class="row">
         <div class="col-5">
             <div th:text="'User: ' + ${userDto.email}"></div>
-            <div th:text="'Balance: ' + ${userDto.balance}"></div>
+            <span th:text="'Balance: ' + ${userDto.balance}">
+
+            </span>  <a class="btn btn-primary" type="button" th:href="@{/account/balance}">Add to balance</a>
         </div>
     </div>
 
@@ -27,6 +29,12 @@
                 <button class="nav-link" id="favorited" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Favorited</button>
                 <button class="nav-link" id="cart" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Cart</button>
             </div>
+
+        <div class="col-md-6 offset-md-3 mt-3">
+            <div th:if="${alertMessage != null}" id="alert">
+                <div th:class="'alert alert-' + ${alertType}" role="alert" th:text="${alertMessage}"></div>
+            </div>
+        </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="owned" tabindex="0">
@@ -90,11 +98,18 @@
                     </table>
                     <form th:action="@{/buyNftsInCart}" th:object="${userDto}" method="post">
                         <button class="btn btn-primary" type="submit">Checkout</button>
+                        <button class="btn btn-primary">PayPal</button>
 
                     </form>
                 </div>
             </div>
         </div>
+
+    <script type="text/javascript" th:src="@{/js/alert.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 
 </body>
 </html>

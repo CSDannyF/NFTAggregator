@@ -80,8 +80,29 @@ body {
     display: block;
 }
 
+#collectionStats {
+    font-color: black;
+    font-weight: 700;
+    z-index: 1;
+    position: relative;
+}
+
+
+
 #collectionBanner {
-    width: fill;
+    background-image ;
+    position: absolute;
+    box-sizing: border-box;
+    margin: auto;
+    display: block;
+    width: 0px;
+    height: 0px;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    object fit: cover;
+    opacity: 1;
 }
 
 #trendingImage {
@@ -104,4 +125,8 @@ body {
 
 .card-text {
     font-size: 15px;
+}
+
+#alert {
+    opacity: 1;
 }

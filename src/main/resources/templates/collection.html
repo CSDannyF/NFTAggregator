@@ -15,10 +15,9 @@
     <div th:insert="~{fragments/header :: header}"></div>
   </div>
 
-  <img id="collectionBanner" class="img-fluid" th:src="${collection.banner}" alt="cat">
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="collectionStats">
 
       <div class="col" th:text="${collection.name}">name and logo</div>
       <div class="col">
@@ -36,6 +35,8 @@
       <div class="col">royalty</div>
     </div>
   </div>
+
+  <img id="collectionBanner" class="img-fluid" th:src="${collection.banner}" alt="cat">
 
 
   <div class="row">

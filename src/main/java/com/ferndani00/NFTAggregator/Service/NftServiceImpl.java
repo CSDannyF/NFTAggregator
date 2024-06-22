@@ -53,34 +53,74 @@ public class NftServiceImpl implements NftService {
     public NftDto addToCart(NftDto nftDto, UserDto userDto) {
         Nft nft = mapDtoToModel(nftDto);
         nft.setCollection(nftCollectionRepository.findByAddress(nft.getContractAddress()));
-        List<Nft> existing = userRepository.findByEmail(userDto.getEmail()).getFavoritedNfts();
+        List<Nft> nftsInCart = userRepository.findByEmail(userDto.getEmail()).getNftsInCart();
         User user = userRepository.findByEmail(userDto.getEmail());
         User newUser = new User();
 
-        //If nft in cart, not adding again
-        if (!isNftInList(existing, nft)) {
-            user.getNftsInCart().add(nft);
-            newUser = userRepository.save(user);
+        List<Nft> nftsinDb = nftRepository.findAll();
+
+        if (!isNftInList(user.getOwnedNfts(), nft)) {
+
+            //check is nft is in nft table and not in cart
+            if (isNftInList(nftsinDb, nft) && !isNftInList(nftsInCart, nft)) {
+                System.out.println("exists in db and not cart");
+                Nft nftFromDb = nftRepository.findByContractAddressAndTokenId(nft.getContractAddress(), nft.getTokenId());
+                user.getNftsInCart().add(nftFromDb);
+                newUser = userRepository.save(user);
+                Nft newCartNft = newUser.getNftsInCart().getLast();
+                return mapModelToDto(newCartNft);
+
+                //check if nft is not in nft table and not in cart
+            } else if (!isNftInList(nftsinDb, nft) && !isNftInList(nftsInCart, nft)) {
+                System.out.println("does not exist in db and not cart");
+
+                user.getNftsInCart().add(nft);
+                newUser = userRepository.save(user);
+                Nft newCartNft = newUser.getNftsInCart().getLast();
+                return mapModelToDto(newCartNft);
+
+                //otherwise already in nft table and in cart
+            } else {
+                System.out.println("already in db and cart");
+                return getByContractAddressAndTokenId(nftDto.getContractAddress(), nftDto.getTokenId());
+            }
+        } else {
+            return nftDto;
         }
-        Nft newNftInCart = newUser.getNftsInCart().getLast();
-        return mapModelToDto(newNftInCart);
     }
 
     @Override
     public NftDto addToFavorites(NftDto nftDto, UserDto userDto) {
         Nft nft = mapDtoToModel(nftDto);
         nft.setCollection(nftCollectionRepository.findByAddress(nft.getContractAddress()));
-        List<Nft> existing = userRepository.findByEmail(userDto.getEmail()).getFavoritedNfts();
+        List<Nft> favoritedNfts = userRepository.findByEmail(userDto.getEmail()).getFavoritedNfts();
         User user = userRepository.findByEmail(userDto.getEmail());
         User newUser = new User();
 
-        //If nft in favoriteList, not adding again
-        if (!isNftInList(existing, nft)) {
+        List<Nft> nftsinDb = nftRepository.findAll();
+
+        //check is nft is in nft table and not as favorite
+        if (isNftInList(nftsinDb, nft) && !isNftInList(favoritedNfts, nft)) {
+            System.out.println("exists in db and not favorite");
+            Nft nftFromDb = nftRepository.findByContractAddressAndTokenId(nft.getContractAddress(), nft.getTokenId());
+            user.getFavoritedNfts().add(nftFromDb);
+            newUser = userRepository.save(user);
+            Nft newfavoriteNft = newUser.getFavoritedNfts().getLast();
+            return mapModelToDto(newfavoriteNft);
+
+            //check if nft is not in nft table and not as favorite
+        } else if (!isNftInList(nftsinDb, nft) && !isNftInList(favoritedNfts, nft)) {
+            System.out.println("does not exist in db and not favorite");
+
             user.getFavoritedNfts().add(nft);
             newUser = userRepository.save(user);
+            Nft newfavoriteNft = newUser.getFavoritedNfts().getLast();
+            return mapModelToDto(newfavoriteNft);
+
+            //otherwise already in nft table and as favorite
+        } else {
+            return getByContractAddressAndTokenId(nftDto.getContractAddress(), nftDto.getTokenId());
         }
-        Nft newfavoriteNft = newUser.getFavoritedNfts().getLast();
-        return mapModelToDto(newfavoriteNft);
     }
 
     @Override
@@ -110,6 +150,7 @@ public class NftServiceImpl implements NftService {
 
         user.getOwnedNfts().addAll(user.getNftsInCart());
         user.getNftsInCart().removeAll(user.getNftsInCart());
+        user.setBalance(userDto.getBalance());
 
         User newUser = userRepository.save(user);
         List<NftDto> newOwnedNft = mapModelToDtoList(newUser.getOwnedNfts());
@@ -167,7 +208,7 @@ public class NftServiceImpl implements NftService {
         for (Nft nft : nfts) {
             NftDto nftDto = new NftDto();
             nftDto.setContractAddress(nft.getContractAddress());
-            nftDto.setNativePrice(nft.getNftId());
+            nftDto.setNativePrice(nft.getPrice());
             nftDto.setImageLarge(nft.getImageUrl());
             nftDto.setTokenId(nft.getTokenId());
             if (nft.getCollection() != null) //waarom is dit null?

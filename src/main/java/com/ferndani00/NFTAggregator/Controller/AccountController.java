@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -48,6 +49,39 @@ public class AccountController {
         return "account";
     }
 
+    @GetMapping("/account/balance")
+    public String accountBalance(Authentication authentication,
+                                 Model model) {
+        //checked als er een gebruiker is ingelogd, anders wordt hij naar het loginscherm gestuurd
+        if (authentication == null) {
+            return "redirect:/login";
+        }
+        UserDto userDto = userService.getByEmail(authentication.getName());
+        double amount = 0.0;
+
+        model.addAttribute("userDto", userDto);
+        model.addAttribute("amount", amount);
+        return "balance";
+    }
+
+    @PostMapping("/account/addToBalance")
+    public String addToBalance(@RequestParam("amount") Double amount,
+                               Authentication authentication,
+                               Model model) {
+        if (authentication == null) {
+            return "redirect:/login";
+        }
+        UserDto userDto = userService.getByEmail(authentication.getName());
+        userService.changeBalance(amount, userDto);
+
+        model.addAttribute("userDto", userDto);
+        model.addAttribute("ownedNfts", userDto.getOwnedNfts());
+        model.addAttribute("favoriteNfts", userDto.getFavoriteNfts());
+        model.addAttribute("nftsInCart", userDto.getNftsInCart());
+
+        return "account";
+    }
+
     @PostMapping("/buyNftsInCart")
     public String buyNftsInCart(Authentication authentication,
                                 Model model) {
@@ -57,26 +91,53 @@ public class AccountController {
 
         UserDto userDto = userService.getByEmail(authentication.getName());
 
+        double totalNativePrice = 0.0;
+        double totalUsdPrice = 0.0;
+
+        for (NftDto nftDto : userDto.getNftsInCart()) {
+            totalNativePrice += nftDto.getNativePrice();
+            totalUsdPrice += nftDto.getUsdPrice();
+        }
+
+        // Check balance before update
+        if (totalNativePrice > userDto.getBalance()) {
+            model.addAttribute("userDto", userDto);
+            model.addAttribute("userDto", userDto);
+            model.addAttribute("ownedNfts", userDto.getOwnedNfts());
+            model.addAttribute("favoriteNfts", userDto.getFavoriteNfts());
+            model.addAttribute("nftsInCart", userDto.getNftsInCart());
+            model.addAttribute("error", true);
+            return "redirect:/account"; // Redirect to account page with error message
+        }
+
+        // Update balance and purchase NFTs if balance is sufficient
+        userDto.setBalance(userDto.getBalance() - totalNativePrice);
+        nftService.buyNftsInCart(userDto);
+
+        model.addAttribute("userDto", userDto);
         model.addAttribute("userDto", userDto);
         model.addAttribute("ownedNfts", userDto.getOwnedNfts());
         model.addAttribute("favoriteNfts", userDto.getFavoriteNfts());
         model.addAttribute("nftsInCart", userDto.getNftsInCart());
+        model.addAttribute("error", false);
 
-        nftService.buyNftsInCart(userDto);
-        return "redirect:/account";
+        return "redirect:/account"; // Consider redirecting to a success page after purchase
     }
 
     @GetMapping("/checkout")
     public String checkout(Model model,
-                           Authentication authentication) {
+                           Authentication authentication,
+                           BindingResult result) {
         if (authentication == null) {
             return "redirect:/login";
         }
+
         UserDto userDto = userService.getByEmail(authentication.getName());
+
         double totalNativePrice = 0.0;
         double totalUsdPrice = 0.0;
 
-        for (NftDto nftDto: userDto.getNftsInCart()) {
+        for (NftDto nftDto : userDto.getNftsInCart()) {
             totalNativePrice += nftDto.getNativePrice();
             totalUsdPrice += nftDto.getUsdPrice();
         }
@@ -101,13 +162,13 @@ public class AccountController {
 
         NftDto nftDto = nftService.getListedNftData(contractAddress, tokenId);
         UserDto userDto = userService.getByEmail(authentication.getName());
+        nftService.removeFromCart(nftDto, userDto);
 
         model.addAttribute("userDto", userDto);
         model.addAttribute("ownedNfts", userDto.getOwnedNfts());
         model.addAttribute("favoriteNfts", userDto.getFavoriteNfts());
         model.addAttribute("nftsInCart", userDto.getNftsInCart());
 
-        nftService.removeFromCart(nftDto, userDto);
         return "account";
     }
 }

@@ -71,6 +71,13 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
+    @Override
+    public void changeBalance(double amount, UserDto userDto) {
+        User user = userRepository.findByEmail(userDto.getEmail());
+        user.setBalance(userDto.getBalance() + amount);
+        userRepository.save(user);
+    }
+
     private UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());

@@ -6,7 +6,12 @@ import java.util.List;
 
 public interface UserService {
     List<UserDto> getAll();
+
     void saveUser(UserDto userDto);
+
     UserDto getById(long id);
+
     UserDto getByEmail(String email);
+
+    void changeBalance(double amount, UserDto userDto);
 }
