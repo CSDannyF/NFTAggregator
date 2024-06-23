@@ -23,16 +23,6 @@ public class NftEndpoint {
         return response;
     }
 
-    //collectionSlug is wat bij opensea achter collections/ staat in url
-    public String getCollection(String collectionSlug) {
-        ApiHttpClient apiHttpClient = new ApiHttpClient();
-        Gson gson = new Gson();
-
-        String url = "https://api.opensea.io/api/v2/collections/" + collectionSlug;
-        String response = apiHttpClient.getRequest(url);
-        return response;
-    }
-
     //reservoir api met voor specifieke een nft
     public TokenResponse getListingData(String tokenContract, String tokenName) {
         ApiHttpClient apiHttpClient = new ApiHttpClient();
