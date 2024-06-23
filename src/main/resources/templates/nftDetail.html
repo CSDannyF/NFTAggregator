@@ -26,21 +26,21 @@
 
         <div class="row">
           <div class="col">
+            <form th:action="@{/addToFavorites/} +   ${nft.contractAddress} + '/' + ${nft.tokenId}" method="post" th:object="${nft}">
+              <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                <button class="btn btn-primary" type="submit" th:href="@{/account}">Add to Favorites</button>
+              </div>
+            </form>
+          </div>
 
-          <form th:action="@{/addToFavorites/} +   ${nft.contractAddress} + '/' + ${nft.tokenId}" method="post" th:object="${nft}">
-            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-              <button class="btn btn-primary" type="submit" th:href="@{/account}">Add to Favorites</button>
-              <!--
-              <input type="checkbox" th:value="${nft.tokenId}" class="btn-check" id="favorite" autocomplete="off">
-              <label class="btn btn-outline-primary" for="favorite" th:field="${nft.favorite}">Favorite</label>
+          <div class="col">
+            <form th:action="@{/addToCart/} +   ${nft.contractAddress} + '/' + ${nft.tokenId}" method="post" th:object="${nft}">
+              <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                <button class="btn btn-primary" type="submit" th:href="@{/index}">Add to Cart</button>
+              </div>
+            </form>
+          </div>
 
-              <input type="checkbox"  class="btn-check" id="cart" autocomplete="off">
-              <label class="btn btn-outline-primary" for="cart">Add to cart</label>
-              -->
-            </div>
-          </form>
-
-        </div>
         </div>
       </div>
     </div>
@@ -124,11 +124,7 @@
   </div>
 </div>
 
-<form th:action="@{/addToCart/} +   ${nft.contractAddress} + '/' + ${nft.tokenId}" method="post" th:object="${nft}">
-  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    <button class="btn btn-primary" type="submit" th:href="@{/index}">Add to Cart</button>
-  </div>
-</form>
+
 
 </body>
 </html>

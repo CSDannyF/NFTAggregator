@@ -5,8 +5,6 @@ import com.ferndani00.NFTAggregator.Service.NftServiceImpl;
 import com.ferndani00.NFTAggregator.Service.UserService;
 import com.ferndani00.NFTAggregator.dto.NftDto;
 import com.ferndani00.NFTAggregator.dto.UserDto;
-import com.ferndani00.NFTAggregator.dto.tokenDtos.CollectionDto;
-import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -29,7 +27,6 @@ public class AccountController {
         this.userService = userService;
     }
 
-    private CollectionDto collectionDto;
 
     @GetMapping("/account")
     public String login(Authentication authentication, Model model) {
@@ -167,6 +164,27 @@ public class AccountController {
         NftDto nftDto = nftService.getListedNftData(contractAddress, tokenId);
         UserDto userDto = userService.getByEmail(authentication.getName());
         nftService.removeFromCart(nftDto, userDto);
+
+        model.addAttribute("userDto", userDto);
+        model.addAttribute("ownedNfts", userDto.getOwnedNfts());
+        model.addAttribute("favoriteNfts", userDto.getFavoriteNfts());
+        model.addAttribute("nftsInCart", userDto.getNftsInCart());
+
+        return "account";
+    }
+    @GetMapping("/removeFromFavorites/{contractAddress}/{tokenId}")
+    public String removeFromFavorites(@PathVariable String contractAddress,
+                                    @PathVariable String tokenId,
+                                    Authentication authentication,
+                                    Model model) {
+        //checked als er een gebruiker is ingelogd, anders wordt hij naar het loginscherm gestuurd
+        if (authentication == null) {
+            return "redirect:/login";
+        }
+
+        NftDto nftDto = nftService.getListedNftData(contractAddress, tokenId);
+        UserDto userDto = userService.getByEmail(authentication.getName());
+        nftService.removeFromFavorites(nftDto, userDto);
 
         model.addAttribute("userDto", userDto);
         model.addAttribute("ownedNfts", userDto.getOwnedNfts());
