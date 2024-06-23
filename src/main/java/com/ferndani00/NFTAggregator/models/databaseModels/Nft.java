@@ -29,7 +29,7 @@ public class Nft {
     private NftCollection collection;
 
     @Column
-    private double price;  //moet nativePrice worden
+    private double price;
 
     @Column(length = 400)
     private String imageUrl;

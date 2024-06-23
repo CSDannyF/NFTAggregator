@@ -135,13 +135,18 @@ public class NftServiceImpl implements NftService {
     }
 
     @Override
-    public void deleteFromFavorites(NftDto nftDto, UserDto userDto) {
+    public void removeFromFavorites(NftDto nftDto, UserDto userDto) {
+        Nft nft = mapDtoToModel(nftDto);
+        User user = userRepository.findByEmail(userDto.getEmail());
+        Nft nftToBeRemoved = getNftInList(user.getFavoritedNfts(), nft);
 
+        user.getFavoritedNfts().remove(nftToBeRemoved);
+        User newuser = userRepository.save(user);
     }
 
     @Override
     public void sellOwnedNft(NftDto nftDto) {
-
+        //nog niet geimplementeerd
     }
 
     @Override

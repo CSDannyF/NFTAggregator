@@ -30,7 +30,7 @@ public class SecurityConfiguration {
         http.csrf().disable()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register/**", "/index", "/login/**", "/collection/**", "/nftDetail/**", "/", "/css/**", "/static/**", "/fonts/**", "/js/**", "/account", "/addToCart/**", "/search/**").permitAll()
-                        .requestMatchers("/account", "/addToCart/{contractAddress}/{tokenId}", "/addToFavorites/**", "/removeFromCart/**", "/checkout/**", "/buyNftsInCart", "/account/balance", "/account/addToBalance").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/account", "/addToCart/{contractAddress}/{tokenId}", "/addToFavorites/**", "/removeFromCart/**", "/removeFromFavorites/**", "/checkout/**", "/buyNftsInCart", "/account/balance", "/account/addToBalance").hasAnyRole("USER", "ADMIN")
                 )
                 .formLogin(login -> login
                         .loginPage("/login")

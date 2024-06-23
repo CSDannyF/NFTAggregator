@@ -29,7 +29,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 300px;
+    height: 200px;
 }
 
 /* header*/
@@ -57,8 +57,6 @@ body {
     height: 350px;
 
 }
-
-
 
 #card-row .card-body {
     padding: 8px;

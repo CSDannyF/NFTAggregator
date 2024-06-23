@@ -14,7 +14,7 @@ public interface NftService {
 
     void removeFromCart(NftDto nftDto, UserDto userDto);
 
-    void deleteFromFavorites(NftDto nftDto, UserDto userDto);
+    void removeFromFavorites(NftDto nftDto, UserDto userDto);
 
     void sellOwnedNft(NftDto nftDto);
 
