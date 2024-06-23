@@ -1,4 +1,4 @@
-package com.ferndani00.NFTAggregator.models.trendingCollections;
+package com.ferndani00.NFTAggregator.APImodels.collectionResponse;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CollectionVolume {
+public class Volume {
     @SerializedName("1day")
     private double oneDay;
     @SerializedName("7day")

@@ -1,6 +1,6 @@
-package com.ferndani00.NFTAggregator.models.searchResponse;
+package com.ferndani00.NFTAggregator.APImodels.searchResponse;
 
-import com.ferndani00.NFTAggregator.models.token.FloorAskPrice;
+import com.ferndani00.NFTAggregator.APImodels.token.FloorAskPrice;
 import lombok.Getter;
 import lombok.Setter;
 

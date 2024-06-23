@@ -107,9 +107,9 @@
                   </h2>
                   <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                      <p th:text="${collection.contractAddress}"></p>
-                      <p th:text="${nft.tokenId}"></p>
-                      <a th:href="@{nft.externalSiteUrl}">gg</a> <!--werkt niet -->
+                      <p th:text="'Contract address: ' + ${collection.contractAddress}"></p>
+                      <p th:text="'Token id: ' + ${nft.tokenId}"></p>
+                      <a th:href="${nft.externalSiteUrl}">Go to external site</a> <!--werkt niet -->
                     </div>
                   </div>
                 </div>

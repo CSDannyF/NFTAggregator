@@ -1,9 +1,7 @@
-package com.ferndani00.NFTAggregator.models.commonClasses;
+package com.ferndani00.NFTAggregator.APImodels.commonClasses;
 
-import com.ferndani00.NFTAggregator.models.token.Source;
-import lombok.AllArgsConstructor;
+import com.ferndani00.NFTAggregator.APImodels.token.Source;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter

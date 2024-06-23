@@ -25,5 +25,4 @@ public class NftCollectionDto {
     private double dailyVolume;
     private double dailyVolumeChange;
     private double floorPriceInUsd;
-
 }

@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder;
-    private NftServiceImpl nftService;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final NftServiceImpl nftService;
 
     @Autowired
     private UserServiceImpl(UserRepository userRepository,
@@ -82,12 +82,18 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         userDto.setBalance(user.getBalance());
-        userDto.setFavoriteNfts(nftService.mapModelToDtoList(user.getFavoritedNfts()));
 
-        if (!user.getOwnedNfts().isEmpty()) {
-            userDto.setOwnedNfts(nftService.mapModelToDtoList(user.getOwnedNfts()));
+        NftServiceImpl nftService1 = new NftServiceImpl();
+        if (user.getFavoritedNfts() != null) {
+
+            userDto.setFavoriteNfts(nftService1.mapModelToDtoList(user.getFavoritedNfts()));
         }
-        userDto.setNftsInCart(nftService.mapModelToDtoList(user.getNftsInCart()));
+
+        if (user.getOwnedNfts() != null && !user.getOwnedNfts().isEmpty()) {
+            userDto.setOwnedNfts(nftService1.mapModelToDtoList(user.getOwnedNfts()));
+        }
+        if (user.getNftsInCart() != null)
+        userDto.setNftsInCart(nftService1.mapModelToDtoList(user.getNftsInCart()));
         return userDto;
     }
 

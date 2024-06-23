@@ -1,6 +1,6 @@
-package com.ferndani00.NFTAggregator.models.token;
+package com.ferndani00.NFTAggregator.APImodels.token;
 
-import com.ferndani00.NFTAggregator.models.commonClasses.FloorAsk;
+import com.ferndani00.NFTAggregator.APImodels.commonClasses.FloorAsk;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

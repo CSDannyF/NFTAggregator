@@ -1,4 +1,4 @@
-package com.ferndani00.NFTAggregator.models.token;
+package com.ferndani00.NFTAggregator.APImodels.token;
 
 import lombok.Getter;
 import lombok.Setter;

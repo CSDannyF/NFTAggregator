@@ -1,5 +1,6 @@
 package com.ferndani00.NFTAggregator.Service;
 
+import com.ferndani00.NFTAggregator.databaseModels.Nft;
 import com.ferndani00.NFTAggregator.databaseModels.User;
 import com.ferndani00.NFTAggregator.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,20 +35,33 @@ public class UserServiceTest {
 
     @BeforeEach
     void init() {
+        List<Nft> ownedNfts = new ArrayList<>();
+        List<Nft> cart = new ArrayList<>();
+        List<Nft> favoritNfts = new ArrayList<>();
+
         user1 = new User();
         user1.setBalance(10);
         user1.setPassword("password");
         user1.setEmail("user1@email.com");
+        user1.setFavoritedNfts(favoritNfts);
+        user1.setOwnedNfts(ownedNfts);
+        user1.setNftsInCart(cart);
 
         user2 = new User();
         user2.setBalance(20);
         user2.setPassword("password");
         user2.setEmail("user2@email.com");
+        user2.setFavoritedNfts(favoritNfts);
+        user2.setOwnedNfts(ownedNfts);
+        user2.setNftsInCart(cart);
 
         user3 = new User();
         user3.setBalance(30);
         user3.setPassword("password");
         user3.setEmail("user3@email.com");
+        user3.setFavoritedNfts(favoritNfts);
+        user3.setOwnedNfts(ownedNfts);
+        user3.setNftsInCart(cart);
     }
 
     @Test
@@ -62,7 +76,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Sjould return a list of users")
+    @DisplayName("Should return a list of users")
     void getUsers() {
         List<User> users = new ArrayList<>();
         users.add(user1);

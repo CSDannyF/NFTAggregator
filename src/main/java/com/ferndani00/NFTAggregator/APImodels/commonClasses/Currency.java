@@ -1,4 +1,4 @@
-package com.ferndani00.NFTAggregator.models.commonClasses;
+package com.ferndani00.NFTAggregator.APImodels.commonClasses;
 
 import lombok.Getter;
 import lombok.Setter;

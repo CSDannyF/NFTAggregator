@@ -1,4 +1,4 @@
-package com.ferndani00.NFTAggregator.models.trendingCollections;
+package com.ferndani00.NFTAggregator.APImodels.trendingCollections;
 
 import lombok.Getter;
 import lombok.Setter;

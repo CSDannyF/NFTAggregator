@@ -1,4 +1,4 @@
-package com.ferndani00.NFTAggregator.models.collectionResponse;
+package com.ferndani00.NFTAggregator.APImodels.collectionResponse;
 
 import lombok.Getter;
 import lombok.Setter;

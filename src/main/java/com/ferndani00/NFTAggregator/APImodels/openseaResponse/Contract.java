@@ -1,4 +1,4 @@
-package com.ferndani00.NFTAggregator.models.openseaResponse;
+package com.ferndani00.NFTAggregator.APImodels.openseaResponse;
 
 import lombok.Getter;
 import lombok.Setter;

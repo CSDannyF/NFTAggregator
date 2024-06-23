@@ -1,10 +1,10 @@
 package com.ferndani00.NFTAggregator.Endpoints;
 
 import com.ferndani00.NFTAggregator.ApiHttpClient.ApiHttpClient;
-import com.ferndani00.NFTAggregator.models.collectionResponse.CollectionResponse;
-import com.ferndani00.NFTAggregator.models.openseaResponse.Root;
-import com.ferndani00.NFTAggregator.models.searchResponse.SearchResponse;
-import com.ferndani00.NFTAggregator.models.trendingCollections.TrendingCollectionResponse;
+import com.ferndani00.NFTAggregator.APImodels.collectionResponse.CollectionResponse;
+import com.ferndani00.NFTAggregator.APImodels.openseaResponse.Root;
+import com.ferndani00.NFTAggregator.APImodels.searchResponse.SearchResponse;
+import com.ferndani00.NFTAggregator.APImodels.trendingCollections.TrendingCollectionResponse;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;

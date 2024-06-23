@@ -1,7 +1,7 @@
-package com.ferndani00.NFTAggregator.models.collectionResponse;
+package com.ferndani00.NFTAggregator.APImodels.collectionResponse;
 
-import com.ferndani00.NFTAggregator.models.commonClasses.FloorAsk;
-import com.ferndani00.NFTAggregator.models.trendingCollections.VolumeChange;
+import com.ferndani00.NFTAggregator.APImodels.commonClasses.FloorAsk;
+import com.ferndani00.NFTAggregator.APImodels.trendingCollections.VolumeChange;
 import lombok.Getter;
 import lombok.Setter;
 

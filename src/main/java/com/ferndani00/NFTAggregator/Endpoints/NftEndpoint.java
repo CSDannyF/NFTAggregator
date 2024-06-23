@@ -1,7 +1,7 @@
 package com.ferndani00.NFTAggregator.Endpoints;
 
 import com.ferndani00.NFTAggregator.ApiHttpClient.ApiHttpClient;
-import com.ferndani00.NFTAggregator.models.token.TokenResponse;
+import com.ferndani00.NFTAggregator.APImodels.token.TokenResponse;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;

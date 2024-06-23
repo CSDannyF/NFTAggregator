@@ -1,6 +1,6 @@
-package com.ferndani00.NFTAggregator.models.trendingCollections;
+package com.ferndani00.NFTAggregator.APImodels.trendingCollections;
 
-import com.ferndani00.NFTAggregator.models.commonClasses.FloorAsk;
+import com.ferndani00.NFTAggregator.APImodels.commonClasses.FloorAsk;
 import lombok.Getter;
 import lombok.Setter;
 
