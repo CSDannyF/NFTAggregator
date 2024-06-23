@@ -1,8 +1,8 @@
 package com.ferndani00.NFTAggregator.Service;
 
 import com.ferndani00.NFTAggregator.dto.UserDto;
-import com.ferndani00.NFTAggregator.models.databaseModels.Role;
-import com.ferndani00.NFTAggregator.models.databaseModels.User;
+import com.ferndani00.NFTAggregator.databaseModels.Role;
+import com.ferndani00.NFTAggregator.databaseModels.User;
 import com.ferndani00.NFTAggregator.repository.RoleRepository;
 import com.ferndani00.NFTAggregator.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,32 +40,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(UserDto userDto) {
+    public UserDto saveUser(UserDto userDto) {
         User user = new User();
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         Role role;
 
-        if(userRepository.findAll().isEmpty()) {
+        if (userRepository.findAll().isEmpty()) {
             initiateRoles();
             role = roleRepository.findByName("ROLE_ADMIN");
         } else {
             role = roleRepository.findByName("ROLE_USER");
         }
         user.setRoles(Arrays.asList(role));
-        userRepository.save(user);
+        User newUser = userRepository.save(user);
+        return mapToUserDto(newUser);
     }
 
     @Override
     public UserDto getById(long id) {
-        return mapToUserDto(userRepository.findById(id).get());
+        return mapToUserDto(userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found")));
     }
 
-    // hier roep ik 2x de db aan, wil dit maar 1 x doen
     @Override
     public UserDto getByEmail(String email) {
         UserDto userDto = new UserDto();
-        if(userRepository.findByEmail(email) != null) {
+        if (userRepository.findByEmail(email) != null) {
             userDto = mapToUserDto(userRepository.findByEmail(email));
         }
         return userDto;
@@ -84,24 +84,14 @@ public class UserServiceImpl implements UserService {
         userDto.setBalance(user.getBalance());
         userDto.setFavoriteNfts(nftService.mapModelToDtoList(user.getFavoritedNfts()));
 
-        if(!user.getOwnedNfts().isEmpty()){
+        if (!user.getOwnedNfts().isEmpty()) {
             userDto.setOwnedNfts(nftService.mapModelToDtoList(user.getOwnedNfts()));
         }
         userDto.setNftsInCart(nftService.mapModelToDtoList(user.getNftsInCart()));
         return userDto;
     }
 
-    private User mapToUser(UserDto userDto) {
-        User user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setBalance(userDto.getBalance());
-        //user.setOwnedNfts(userDto.getOwnedNfts());
-        //user.setFavoritedNfts(userDto.getFavoriteNfts());
-        //user.setNftsInCart(userDto.getNftsInCart());
-        return user;
-    }
-
-    private Role checkRoleExist(){
+    private Role checkRoleExist() {
         Role role = new Role();
         role.setName("ROLE_ADMIN");
         return roleRepository.save(role);

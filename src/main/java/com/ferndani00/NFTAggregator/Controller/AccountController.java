@@ -1,6 +1,5 @@
 package com.ferndani00.NFTAggregator.Controller;
 
-import com.ferndani00.NFTAggregator.Service.NftCollectionServiceImpl;
 import com.ferndani00.NFTAggregator.Service.NftServiceImpl;
 import com.ferndani00.NFTAggregator.Service.UserService;
 import com.ferndani00.NFTAggregator.dto.NftDto;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -21,7 +19,6 @@ public class AccountController {
     private NftServiceImpl nftService;
 
     @Autowired
-    private NftCollectionServiceImpl collectionService;
 
     public AccountController(UserService userService) {
         this.userService = userService;
@@ -127,8 +124,7 @@ public class AccountController {
 
     @GetMapping("/checkout")
     public String checkout(Model model,
-                           Authentication authentication,
-                           BindingResult result) {
+                           Authentication authentication) {
         if (authentication == null) {
             return "redirect:/login";
         }
@@ -142,11 +138,12 @@ public class AccountController {
             totalNativePrice += nftDto.getNativePrice();
             totalUsdPrice += nftDto.getUsdPrice();
         }
+        String priceSymbol = userDto.getNftsInCart().getFirst().getPriceSymbol();
 
-        model.addAttribute("user", userDto);
+        model.addAttribute("userDto", userDto);
         model.addAttribute("nftsInCart", userDto.getNftsInCart());
         model.addAttribute("totalNativePrice", totalNativePrice);
-        model.addAttribute("totalUsdPrice", totalUsdPrice);
+        model.addAttribute("priceSymbol", priceSymbol);
 
         return "checkout";
     }
@@ -172,11 +169,12 @@ public class AccountController {
 
         return "account";
     }
+
     @GetMapping("/removeFromFavorites/{contractAddress}/{tokenId}")
     public String removeFromFavorites(@PathVariable String contractAddress,
-                                    @PathVariable String tokenId,
-                                    Authentication authentication,
-                                    Model model) {
+                                      @PathVariable String tokenId,
+                                      Authentication authentication,
+                                      Model model) {
         //checked als er een gebruiker is ingelogd, anders wordt hij naar het loginscherm gestuurd
         if (authentication == null) {
             return "redirect:/login";

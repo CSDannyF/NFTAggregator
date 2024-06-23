@@ -13,5 +13,4 @@ public class Amount {
     private String raw;
     private double decimal;
     private double usd;
-    //private double native;
 }

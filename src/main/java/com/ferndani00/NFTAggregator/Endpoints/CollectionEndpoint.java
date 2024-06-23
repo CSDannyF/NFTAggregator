@@ -29,8 +29,7 @@ public class CollectionEndpoint {
         Gson gson = new Gson();
         String url = "";
 
-        if(!next.isEmpty())
-        {
+        if (!next.isEmpty()) {
             url = "https://api.opensea.io/api/v2/collections?chain=ethereum&next=" + next + "&order_by=market_cap";
         } else {
             url = "https://api.opensea.io/api/v2/collections?chain=ethereum&order_by=market_cap";
@@ -61,8 +60,7 @@ public class CollectionEndpoint {
         return collectionResponse;
     }
 
-    public SearchResponse getSearchResponse(String search)
-    {
+    public SearchResponse getSearchResponse(String search) {
         ApiHttpClient apiHttpClient = new ApiHttpClient();
         Gson gson = new Gson();
 

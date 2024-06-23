@@ -6,9 +6,9 @@ import com.ferndani00.NFTAggregator.dto.NftDto;
 import com.ferndani00.NFTAggregator.dto.UserDto;
 import com.ferndani00.NFTAggregator.helperClasses.NumberRounder;
 import com.ferndani00.NFTAggregator.models.collectionResponse.CollectionResponse;
-import com.ferndani00.NFTAggregator.models.databaseModels.Nft;
-import com.ferndani00.NFTAggregator.models.databaseModels.NftCollection;
-import com.ferndani00.NFTAggregator.models.databaseModels.User;
+import com.ferndani00.NFTAggregator.databaseModels.Nft;
+import com.ferndani00.NFTAggregator.databaseModels.NftCollection;
+import com.ferndani00.NFTAggregator.databaseModels.User;
 import com.ferndani00.NFTAggregator.models.token.TokenResponse;
 import com.ferndani00.NFTAggregator.models.token.TokenWrapper;
 import com.ferndani00.NFTAggregator.repository.NftCollectionRepository;
@@ -48,7 +48,7 @@ public class NftServiceImpl implements NftService {
     @Autowired
     private NftCollectionServiceImpl collectionService;
 
-    //TODO in nftowned nog de owner setten
+    //add nft to cart
     @Override
     public NftDto addToCart(NftDto nftDto, UserDto userDto) {
         Nft nft = mapDtoToModel(nftDto);
@@ -89,6 +89,7 @@ public class NftServiceImpl implements NftService {
         }
     }
 
+    //add nft to favorites
     @Override
     public NftDto addToFavorites(NftDto nftDto, UserDto userDto) {
         Nft nft = mapDtoToModel(nftDto);
@@ -123,6 +124,7 @@ public class NftServiceImpl implements NftService {
         }
     }
 
+    //remove nft from cart
     @Override
     public void removeFromCart(NftDto nftDto, UserDto userDto) {
 
@@ -134,6 +136,7 @@ public class NftServiceImpl implements NftService {
         userRepository.save(user);
     }
 
+    //remove nft from favorites
     @Override
     public void removeFromFavorites(NftDto nftDto, UserDto userDto) {
         Nft nft = mapDtoToModel(nftDto);
@@ -149,6 +152,7 @@ public class NftServiceImpl implements NftService {
         //nog niet geimplementeerd
     }
 
+    //buying the nft's in cart and afterwards making the cart empty
     @Override
     public List<NftDto> buyNftsInCart(UserDto userDto) {
         User user = userRepository.findByEmail(userDto.getEmail());
@@ -167,6 +171,7 @@ public class NftServiceImpl implements NftService {
         return null;
     }
 
+    //Getting a nft out the database
     @Override
     public NftDto getByContractAddressAndTokenId(String contractAddress, String tokenId) {
         Nft nft = new Nft();
@@ -184,8 +189,6 @@ public class NftServiceImpl implements NftService {
         return mapToNftDtoList(response);
     }
 
-
-    //Moet mss via de endpoint worden gedaan om meer data te krijgen
     public NftDto mapModelToDto(Nft nft) {
         NftDto nftDto = new NftDto();
         nftDto.setContractAddress(nft.getContractAddress());
@@ -228,27 +231,7 @@ public class NftServiceImpl implements NftService {
         return nftDtos;
     }
 
-    public List<Nft> mapDtoToModelList(List<NftDto> nftDos) {
-        List<Nft> nfts = new ArrayList<>();
-        for (NftDto nftDto : nftDos) {
-            Nft nft = new Nft();
-            nft.setContractAddress(nftDto.getContractAddress());
-
-            CollectionEndpoint collectionEndpoint = new CollectionEndpoint();
-            CollectionResponse collectionResponse = collectionEndpoint.getCollection(nft.getContractAddress());
-
-            NftCollectionServiceImpl collectionService = new NftCollectionServiceImpl();
-            NftCollection nftCollection = collectionService.mapCollectionResponseToModel(collectionResponse);
-
-            nft.setCollection(nftCollection);
-            nft.setPrice(nftDto.getNativePrice());
-            nft.setImageUrl(nftDto.getImageLarge());
-
-            nfts.add(nft);
-        }
-        return nfts;
-    }
-
+    //map single nft response to dto
     public NftDto mapResponseToDto(TokenResponse response) {
         NftDto nftDto = new NftDto();
         TokenWrapper nft = response.getTokens().get(0);
@@ -283,7 +266,7 @@ public class NftServiceImpl implements NftService {
         return nftDto;
     }
 
-    //Mapper om de listedTokend/Nfts te mappen in een vereenvoudigde klaqqe
+    //Map repsonse list to dto
     public List<NftDto> mapToNftDtoList(TokenResponse tokenResponse) {
         List<NftDto> nftDtos = new ArrayList<>();
 
@@ -321,6 +304,7 @@ public class NftServiceImpl implements NftService {
         return nftDtos;
     }
 
+    //helper method to get a specific nft out a list
     private Nft getNftInList(List<Nft> nftList, Nft nft) {
         for (Nft nft1 : nftList) {
             if (nft1.getContractAddress().equals(nft.getContractAddress()) && nft1.getTokenId().equals(nft.getTokenId())) {
@@ -330,7 +314,7 @@ public class NftServiceImpl implements NftService {
         return nft;
     }
 
-    //mss enkel degene hierboven gebruiken met isEmpty()
+    //helper method to check if specific nft is in list
     private boolean isNftInList(List<Nft> nftList, Nft nft) {
         boolean isInList = false;
         for (Nft nft1 : nftList) {

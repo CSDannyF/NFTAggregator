@@ -1,4 +1,4 @@
-package com.ferndani00.NFTAggregator.models.databaseModels;
+package com.ferndani00.NFTAggregator.databaseModels;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,5 +36,4 @@ public class Nft {
 
     @Column(length = 400)
     private String imageUrl;
-
 }

@@ -8,14 +8,13 @@ import java.net.http.HttpResponse;
 
 public class ApiHttpClient {
     public HttpClient httpClient;
-    public ApiHttpClient()
-    {
+
+    public ApiHttpClient() {
         this.httpClient = HttpClient.newHttpClient();
     }
 
     // opensea
-    public String getRequest(String url)
-    {
+    public String getRequest(String url) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
@@ -32,14 +31,13 @@ public class ApiHttpClient {
     }
 
     // reservoir
-    public String getListings(String url)
-    {
-        try{
+    public String getListings(String url) {
+        try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(URI.create(url))
                     .header("accept", "application/json")
-                    .header("x-api-key","a4e99918-df9b-5ac6-bf3a-8054453166a2")
+                    .header("x-api-key", "a4e99918-df9b-5ac6-bf3a-8054453166a2")
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());

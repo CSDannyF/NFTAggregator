@@ -11,15 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-public class HeaderController
-{
+public class HeaderController {
     @Autowired
     private NftCollectionServiceImpl collectionService;
 
     //indien ik zoek op een art blocks collectie loop ik tegen een fout aan omdat alle collecties onder 1 contractAddress staan
     @GetMapping("/search")
-    public String autoComplete(@RequestParam("search") String search, Model model)
-    {
+    public String autoComplete(@RequestParam("search") String search, Model model) {
         List<NftCollectionDto> nftCollectionDtos = collectionService.getSearchCollections(search);
         model.addAttribute("collectionDto", nftCollectionDtos);
         return "search";

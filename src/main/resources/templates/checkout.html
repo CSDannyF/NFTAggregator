@@ -15,6 +15,15 @@
   <div th:insert="~{fragments/header :: header}"></div>
 </div>
 
+<div class="row">
+  <div class="col-5">
+    <div th:text="'User: ' + ${userDto.email}"></div>
+    <span th:text="'Balance: ' + ${userDto.balance}">
+
+            </span>  <a class="btn btn-primary" type="button" th:href="@{/account/balance}">Add to balance</a>
+  </div>
+</div>
+
   <div class="container mt-5">
     <!-- cart table -->
     <table class="table table-striped table-hover">
@@ -52,10 +61,18 @@
       </tbody>
     </table>
 
-    <form th:action="@{/buyNftsInCart}" th:object="${userDto}" method="post">
+    <div class="row">
+      <div class="col">
+        <form th:action="@{/buyNftsInCart}" th:object="${userDto}" method="post">
+          <button class="btn btn-primary" th:href="@{checkout}">Buy</button>
+        </form>
+      </div>
+      <div class="col">
+        <h5 th:text="'Total native price: ' + ${totalNativePrice} + ' ' + ${priceSymbol}"></h5>
+      </div>
+    </div>
 
-      <button class="btn btn-primary" th:href="@{checkout}">Buy</button>
-    </form>
+
 
   </div>
 

@@ -12,22 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-public class CollectionController
-{
+public class CollectionController {
     @Autowired
     private NftServiceImpl nftService;
 
     @Autowired
     private NftCollectionServiceImpl nftCollectionServiceImpl;
 
-    private List<NftDto> nfts;
-    private NftCollectionDto nftCollectionDto;
-
     @GetMapping("/collection/{contractAddress}")
-    public String collection(@PathVariable String contractAddress, Model model)
-    {
-        nftCollectionDto = nftCollectionServiceImpl.getCollection(contractAddress);
-        nfts = nftService.getListedNfts(contractAddress);
+    public String collection(@PathVariable String contractAddress, Model model) {
+        NftCollectionDto nftCollectionDto = nftCollectionServiceImpl.getCollection(contractAddress);
+        List<NftDto> nfts = nftService.getListedNfts(contractAddress);
 
         model.addAttribute("collection", nftCollectionDto);
         model.addAttribute("nfts", nfts);

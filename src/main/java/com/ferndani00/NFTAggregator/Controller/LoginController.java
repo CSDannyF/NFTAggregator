@@ -12,31 +12,26 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class LoginController
-{
+public class LoginController {
     @Autowired
     private UserService userService;
 
-    public LoginController(UserService userService)
-    {
+    public LoginController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/login")
-    public String loginForm()
-    {
+    public String loginForm() {
         return "login";
     }
 
     @PostMapping("/login")
-    public String login()
-    {
+    public String login() {
         return "account";
     }
 
     @GetMapping("/register")
-    public String registerForm(Model model)
-    {
+    public String registerForm(Model model) {
         UserDto userDto = new UserDto();
         model.addAttribute("userDto", userDto);
         return "register";
@@ -45,16 +40,13 @@ public class LoginController
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("userDto") UserDto userDto,
                            BindingResult result,
-                           Model model)
-    {
+                           Model model) {
         UserDto existing = userService.getByEmail(userDto.getEmail());
 
-        if (existing.getEmail() != null)
-        {
+        if (existing.getEmail() != null) {
             result.rejectValue("email", null, "There is already an account with that email");
         }
-        if (result.hasErrors())
-        {
+        if (result.hasErrors()) {
             model.addAttribute("userDto", userDto);
             return "register";
         }

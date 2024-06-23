@@ -5,7 +5,7 @@ import com.ferndani00.NFTAggregator.dto.NftCollectionDto;
 import com.ferndani00.NFTAggregator.helperClasses.NumberRounder;
 import com.ferndani00.NFTAggregator.models.collectionResponse.Collection;
 import com.ferndani00.NFTAggregator.models.collectionResponse.CollectionResponse;
-import com.ferndani00.NFTAggregator.models.databaseModels.NftCollection;
+import com.ferndani00.NFTAggregator.databaseModels.NftCollection;
 import com.ferndani00.NFTAggregator.models.openseaResponse.OpenseaCollection;
 import com.ferndani00.NFTAggregator.models.openseaResponse.Root;
 import com.ferndani00.NFTAggregator.models.searchResponse.SearchCollection;
@@ -24,17 +24,12 @@ import java.util.*;
 @Service
 public class NftCollectionServiceImpl implements NftCollectionService, CommandLineRunner {
 
-    /*
-    Hier in deze klasse zou ik misschien maar op 1 Dto willen werken en niet 2
-     */
-
     @Autowired
     private CollectionEndpoint collectionEndpoint;
 
     @Autowired
     private NftCollectionRepository nftCollectionRepository;
 
-    // nog niet in gebruik, geeft het api model terug, niet de DTO
     public List<NftCollectionDto> getTrendingCollections(String period, int limit) {
         TrendingCollectionResponse response = collectionEndpoint.getTrendingCollections(period, limit);
 
@@ -48,6 +43,7 @@ public class NftCollectionServiceImpl implements NftCollectionService, CommandLi
         return mapCollectionResponseToDto(response);
     }
 
+    //wordt enkel gebruikt als ik de database collection tabel eerst wil vullen
     public List<NftCollection> mapRootToModel(Root root, List<NftCollection> collections) {
 
         Set<String> contractAddressesAndNames = new HashSet<>();
@@ -94,7 +90,6 @@ public class NftCollectionServiceImpl implements NftCollectionService, CommandLi
         return null;
     }
 
-    //nu kan er iedereen aan
     @Override
     public List<NftCollection> getAllModel() {
         return nftCollectionRepository.findAll();
@@ -111,6 +106,7 @@ public class NftCollectionServiceImpl implements NftCollectionService, CommandLi
     }
 
     //wordt niet gebruikt?
+    //kan gebruikt worden als ik een collectie op naam uit de database wil halen.
     @Override
     public List<NftCollectionDto> getCollectionsByName(String name) {
         List<NftCollection> nftCollections = nftCollectionRepository.findByNameContainingIgnoreCase(name);
@@ -122,6 +118,7 @@ public class NftCollectionServiceImpl implements NftCollectionService, CommandLi
     }
 
     //Gebruikt in header voor de zoekfunctie
+    //om de zoekfunctie te gebruiken, dit doe ik via een API eindpoint van reservoir
     public List<NftCollectionDto> getSearchCollections(String searchInput) {
         //vervangt elke spatie in de search met "%20" om de url te laten kloppen
         String search = searchInput.replaceAll(" ", "%20");

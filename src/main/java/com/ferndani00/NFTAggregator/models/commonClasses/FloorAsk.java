@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class FloorAsk {
     public String id;
-
     public Price price;
     public String maker;
     public int validFrom;

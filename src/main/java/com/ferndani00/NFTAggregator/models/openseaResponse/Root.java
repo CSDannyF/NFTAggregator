@@ -8,6 +8,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Root {
-        private List<OpenseaCollection> collections;
-        private String next;
+    private List<OpenseaCollection> collections;
+    private String next;
 }

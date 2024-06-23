@@ -13,7 +13,7 @@ public class TrendingCollection {
     private int count;
     private String id;
     private String image;
-    private ArrayList<String> sampleImages; //nog niet in dto
+    private ArrayList<String> sampleImages;
     private boolean isSpam;
     private String name;
     private VolumeChange volumeChange;

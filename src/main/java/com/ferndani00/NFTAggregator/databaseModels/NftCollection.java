@@ -1,6 +1,5 @@
-package com.ferndani00.NFTAggregator.models.databaseModels;
+package com.ferndani00.NFTAggregator.databaseModels;
 
-import com.ferndani00.NFTAggregator.models.databaseModels.Nft;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

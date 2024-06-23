@@ -10,12 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class NftEndpoint {
 
-    //DAO stands for Data Access Object. DAO Design Pattern is used to separate the data persistence logic in a separate layer.
-    // This way, the service remains completely in dark about how the low-level operations to access the database is done.
-    // This is known as the principle of Separation of Logic
-
-    //dit is dan niet het juiste gebruik van een dao
-
     //opensea api voor 1 nft
     public String getNFT(String contractAddress, String tokenId) {
 
@@ -61,6 +55,4 @@ public class NftEndpoint {
         TokenResponse tokenResponse = gson.fromJson(response, TokenResponse.class);
         return tokenResponse;
     }
-
-
 }
