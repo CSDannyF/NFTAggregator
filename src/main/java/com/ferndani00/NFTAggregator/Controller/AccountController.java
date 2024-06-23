@@ -29,7 +29,7 @@ public class AccountController {
 
 
     @GetMapping("/account")
-    public String login(Authentication authentication, Model model) {
+    public String account(Authentication authentication, Model model) {
         //checked als er een gebruiker is ingelogd, anders wordt hij naar het loginscherm gestuurd
         if (authentication == null) {
             return "redirect:/login";

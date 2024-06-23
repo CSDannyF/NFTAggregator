@@ -31,6 +31,9 @@ public class Nft {
     @Column
     private double price;
 
+    @Column
+    private String priceSymbol;
+
     @Column(length = 400)
     private String imageUrl;
 

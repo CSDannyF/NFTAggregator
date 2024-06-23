@@ -191,6 +191,7 @@ public class NftServiceImpl implements NftService {
         nftDto.setContractAddress(nft.getContractAddress());
         nftDto.setCollectionName(nftDto.getCollectionName());
         nftDto.setNativePrice(nft.getNftId());
+        nftDto.setPriceSymbol(nft.getPriceSymbol());
         nftDto.setImageLarge(nft.getImageUrl());
         return nftDto;
     }
@@ -200,6 +201,7 @@ public class NftServiceImpl implements NftService {
         nft.setTokenId(nftDto.getTokenId());
         nft.setContractAddress(nftDto.getContractAddress());
         nft.setPrice(nftDto.getNativePrice());
+        nft.setPriceSymbol(nftDto.getPriceSymbol());
         nft.setImageUrl(nftDto.getImageLarge());
 
         CollectionResponse collectionResponse = collectionEndpoint.getCollection(nftDto.getCollectionId());
@@ -214,6 +216,7 @@ public class NftServiceImpl implements NftService {
             NftDto nftDto = new NftDto();
             nftDto.setContractAddress(nft.getContractAddress());
             nftDto.setNativePrice(nft.getPrice());
+            nftDto.setPriceSymbol(nft.getPriceSymbol());
             nftDto.setImageLarge(nft.getImageUrl());
             nftDto.setTokenId(nft.getTokenId());
             if (nft.getCollection() != null) //waarom is dit null?
