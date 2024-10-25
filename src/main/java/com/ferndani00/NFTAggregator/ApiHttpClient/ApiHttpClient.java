@@ -20,7 +20,7 @@ public class ApiHttpClient {
                     .GET()
                     .uri(URI.create(url))
                     .header("accept", "application/json")
-                    .header("x-api-key", "abd041307f164bb7806fb5c409e7dc4f")
+                    .header("x-api-key", "api-key")
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -37,7 +37,7 @@ public class ApiHttpClient {
                     .GET()
                     .uri(URI.create(url))
                     .header("accept", "application/json")
-                    .header("x-api-key", "a4e99918-df9b-5ac6-bf3a-8054453166a2")
+                    .header("x-api-key", "api-key")
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
